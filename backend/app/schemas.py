@@ -52,9 +52,65 @@ class ActionOut(BaseModel):
     rendement: float | None = None
     # Pays d'origine (deduit du suffixe du symbole)
     pays: str | None = None
+    # Secteur officiel BRVM (Services financiers, Energie...)
+    secteur: str | None = None
     # Liquidite : volume moyen sur l'historique + classement simple
     volume_moyen: float | None = None
     liquidite: str | None = None  # "haute" | "moyenne" | "faible"
+
+
+class TopActionOut(BaseModel):
+    """Une action classee par le score pedagogique du Top 10."""
+
+    rang: int
+    symbole: str
+    nom: str
+    pays: str | None
+    secteur: str | None
+    meilleur_du_secteur: bool = False
+    cours_cloture: float | None
+    rendement: float | None
+    liquidite: str | None
+    tendance_dividende: str | None
+    score: float                 # sur 100
+    raisons: list[str]           # explication du score, lisible
+
+
+class AchatIn(BaseModel):
+    """Achat fictif : le prix est celui du dernier cours connu."""
+
+    symbole: str
+    quantite: int
+
+
+class PositionOut(BaseModel):
+    id: int
+    symbole: str
+    nom: str
+    quantite: int
+    prix_achat: float
+    jour_achat: date
+    cours_actuel: float | None
+    investi: float                    # quantite x prix_achat
+    valeur_actuelle: float | None     # quantite x cours actuel
+    plus_value: float | None          # valeur - investi
+    plus_value_pct: float | None
+    dividende_annuel: float | None    # quantite x dernier dividende connu
+
+
+class PointValeur(BaseModel):
+    jour: date
+    valeur: float
+
+
+class PortefeuilleOut(BaseModel):
+    positions: list[PositionOut]
+    total_investi: float
+    valeur_totale: float
+    plus_value: float
+    plus_value_pct: float | None
+    dividendes_annuels: float
+    historique: list[PointValeur]     # valeur totale jour par jour
 
 
 class ActionDetailOut(BaseModel):

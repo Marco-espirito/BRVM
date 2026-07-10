@@ -221,6 +221,277 @@ body {
   background: #fef3c7;
 }
 
+/* Analyse comparee (fiche entreprise) */
+.analyse {
+  margin: 24px 0;
+}
+.montant-fictif {
+  background: #fefce8;
+  border: 1px solid #fde047;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.montant-fictif input {
+  width: 90px;
+  padding: 6px 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  text-align: center;
+  color: var(--bleu);
+}
+.bloc-analyse {
+  background: white;
+  border: 1px solid var(--bordure);
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin-bottom: 14px;
+}
+.bloc-analyse h3 {
+  margin: 0 0 10px;
+  font-size: 16px;
+}
+.valeur-metrique {
+  font-size: 18px;
+}
+.jauge-bloc {
+  margin: 12px 0 4px;
+}
+.jauge {
+  position: relative;
+  height: 10px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #fca5a5, #fde68a, #86efac);
+}
+.jauge-marqueur {
+  position: absolute;
+  top: -5px;
+  width: 20px;
+  height: 20px;
+  margin-left: -10px;
+  border-radius: 50%;
+  background: var(--bleu);
+  border: 3px solid white;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+.jauge-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--gris);
+  margin-top: 6px;
+}
+.analyse-stats {
+  font-size: 13px;
+  color: #374151;
+  margin: 10px 0 4px;
+}
+.interpretation {
+  background: #f0f9ff;
+  border-left: 3px solid var(--bleu);
+  padding: 10px 14px;
+  border-radius: 0 8px 8px 0;
+  font-size: 14px;
+  line-height: 1.55;
+  margin: 10px 0 0;
+}
+.note-analyse {
+  margin-top: 4px;
+}
+
+/* Onglets de navigation */
+.onglets {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+.onglet {
+  padding: 8px 14px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #374151;
+  font-size: 14px;
+  font-weight: 500;
+}
+.onglet:hover {
+  background: #f1f5f9;
+}
+.onglet.active {
+  background: var(--bleu);
+  color: white;
+}
+
+/* Simulateur */
+.simulateur-form {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+.champ {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+}
+.champ select,
+.champ input {
+  padding: 10px 12px;
+  border: 1px solid var(--bordure);
+  border-radius: 8px;
+  font-size: 14px;
+  background: white;
+  min-width: 320px;
+}
+.champ-nombre input {
+  min-width: 140px;
+}
+.carte-sous {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--bleu);
+  margin-top: 2px;
+}
+.carte-detail {
+  font-size: 12px;
+  color: var(--gris);
+  margin-top: 6px;
+}
+.alerte {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin: 12px 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.note-fiscale {
+  background: #f8fafc;
+  border: 1px solid var(--bordure);
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin-top: 24px;
+  font-size: 14px;
+}
+.note-fiscale h2 {
+  font-size: 15px;
+  margin: 0 0 10px;
+}
+.note-fiscale ul {
+  margin: 0;
+  padding-left: 18px;
+}
+.note-fiscale li {
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+/* Top 10 */
+.top10 {
+  background: white;
+  border: 1px solid var(--bordure);
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin-bottom: 20px;
+}
+.top10 summary {
+  cursor: pointer;
+  font-size: 14px;
+}
+.top10-liste {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+.top10-carte {
+  border: 1px solid var(--bordure);
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.top10-entete {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.top10-rang {
+  font-weight: 700;
+  color: var(--gris);
+}
+.top10-score {
+  margin-left: auto;
+  font-weight: 700;
+  color: var(--bleu);
+}
+.top10-nom {
+  font-size: 12px;
+  color: var(--gris);
+}
+.chip-secteur {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: #f1f5f9;
+  border: 1px solid var(--bordure);
+  font-size: 11px;
+  color: #374151;
+}
+.chip-secteur.champion {
+  background: #fef9c3;
+  border-color: #fde047;
+  color: #854d0e;
+  font-weight: 600;
+}
+.top10-barre {
+  height: 6px;
+  border-radius: 999px;
+  background: #f1f5f9;
+  overflow: hidden;
+}
+.top10-barre-remplie {
+  height: 100%;
+  background: linear-gradient(90deg, #60a5fa, #2563eb);
+}
+.top10-raisons {
+  margin: 4px 0;
+  padding-left: 16px;
+  font-size: 12px;
+  color: #374151;
+}
+.top10-raisons li {
+  margin-bottom: 2px;
+}
+.top10-choisir {
+  align-self: flex-start;
+  font-size: 12px;
+  padding: 6px 12px;
+}
+
+/* Portefeuille */
+.btn-vendre {
+  padding: 5px 12px;
+  border: 1px solid #fca5a5;
+  border-radius: 8px;
+  background: #fef2f2;
+  color: #b91c1c;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-vendre:hover {
+  background: #fee2e2;
+}
+
 /* Filtres par pays */
 .filtres-pays {
   display: flex;

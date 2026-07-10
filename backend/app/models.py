@@ -24,6 +24,7 @@ class Societe(Base):
 
     symbole: Mapped[str] = mapped_column(String, primary_key=True)
     nom: Mapped[str] = mapped_column(String, nullable=False)
+    secteur: Mapped[str | None] = mapped_column(String)  # classification BRVM
 
     cotations: Mapped[list["Cotation"]] = relationship(
         back_populates="societe", cascade="all, delete-orphan"
@@ -51,6 +52,24 @@ class Cotation(Base):
     recupere_le: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
 
     societe: Mapped["Societe"] = relationship(back_populates="cotations")
+
+
+class Position(Base):
+    """Ligne du portefeuille virtuel : un achat FICTIF d'actions.
+
+    Aucun ordre reel n'est passe nulle part : c'est un simulateur pour
+    apprendre a suivre un portefeuille dans le temps.
+    """
+
+    __tablename__ = "positions"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    symbole: Mapped[str] = mapped_column(
+        String, ForeignKey("societes.symbole"), index=True
+    )
+    quantite: Mapped[int] = mapped_column(Integer, nullable=False)
+    prix_achat: Mapped[float] = mapped_column(Float, nullable=False)  # FCFA
+    jour_achat: Mapped[date] = mapped_column(Date, nullable=False)
 
 
 class Dividende(Base):

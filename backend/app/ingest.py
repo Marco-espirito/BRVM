@@ -3,15 +3,28 @@ from __future__ import annotations
 
 from datetime import date
 
+from sqlalchemy import text
+
 from .db import Base, SessionLocal, engine
 from .models import Cotation, Detachement, Dividende, Societe
 from .scraper.brvm import fetch_cotations
 from .scraper.dividendes import fetch_dividendes
+from .scraper.secteurs import fetch_secteurs
 
 
 def creer_tables() -> None:
-    """Cree les tables si elles n'existent pas encore."""
+    """Cree les tables si elles n'existent pas encore (+ mini-migrations)."""
     Base.metadata.create_all(bind=engine)
+    # create_all n'ajoute pas les colonnes aux tables existantes : on
+    # ajoute 'secteur' a la main si la base date d'avant cette colonne.
+    with engine.connect() as conn:
+        colonnes = [
+            ligne[1]
+            for ligne in conn.execute(text("PRAGMA table_info(societes)"))
+        ]
+        if "secteur" not in colonnes:
+            conn.execute(text("ALTER TABLE societes ADD COLUMN secteur VARCHAR"))
+            conn.commit()
 
 
 def enregistrer_cotations() -> int:
@@ -53,6 +66,24 @@ def enregistrer_cotations() -> int:
 
         db.commit()
         return len(actions)
+    finally:
+        db.close()
+
+
+def enregistrer_secteurs() -> int:
+    """Scrape les 7 pages sectorielles BRVM et met a jour les societes."""
+    creer_tables()
+    mapping = fetch_secteurs()
+    db = SessionLocal()
+    try:
+        nb = 0
+        for societe in db.query(Societe).all():
+            secteur = mapping.get(societe.symbole)
+            if secteur:
+                societe.secteur = secteur
+                nb += 1
+        db.commit()
+        return nb
     finally:
         db.close()
 
@@ -114,3 +145,5 @@ if __name__ == "__main__":
     print(f"{n} cotations enregistrees pour le {date.today()}")
     nb_hist, nb_proch = enregistrer_dividendes()
     print(f"{nb_hist} dividendes (historique) et {nb_proch} detachements a venir")
+    nb_secteurs = enregistrer_secteurs()
+    print(f"{nb_secteurs} societes classees par secteur")

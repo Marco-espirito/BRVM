@@ -1,4 +1,4 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, NavLink, Outlet } from "react-router-dom";
 
 // Layout commun : un en-tete + la page courante (Outlet).
 export default function App() {
@@ -11,6 +11,17 @@ export default function App() {
         <span className="sous-titre">
           Bourse Régionale des Valeurs Mobilières · Afrique de l'Ouest
         </span>
+        <nav className="onglets">
+          <NavLink to="/" end className="onglet">
+            📋 Actions
+          </NavLink>
+          <NavLink to="/simulateur" className="onglet">
+            🧮 Simulateur de dividendes
+          </NavLink>
+          <NavLink to="/portefeuille" className="onglet">
+            💼 Mon portefeuille
+          </NavLink>
+        </nav>
       </header>
       <main className="contenu">
         <Outlet />

@@ -9,15 +9,18 @@ import {
   CartesianGrid,
   ResponsiveContainer,
 } from "recharts";
-import { getAction, formatFCFA } from "../api.js";
+import { getAction, getActions, formatFCFA } from "../api.js";
+import AnalyseComparative from "../components/AnalyseComparative.jsx";
 
 export default function DetailPage() {
   const { symbole } = useParams();
   const [action, setAction] = useState(null);
+  const [marche, setMarche] = useState([]); // toutes les actions, pour comparer
   const [erreur, setErreur] = useState(null);
 
   useEffect(() => {
     getAction(symbole).then(setAction).catch((e) => setErreur(e.message));
+    getActions().then(setMarche).catch(() => {}); // comparaison optionnelle
   }, [symbole]);
 
   if (erreur) return <p className="info erreur">Erreur : {erreur}</p>;
@@ -71,6 +74,10 @@ export default function DetailPage() {
             />
           )}
         </div>
+      )}
+
+      {marche.length > 0 && (
+        <AnalyseComparative action={action} marche={marche} />
       )}
 
       {action.prochain_detachement && (
