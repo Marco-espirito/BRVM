@@ -9,10 +9,9 @@ On visite chaque page et on note quels symboles y figurent.
 """
 from __future__ import annotations
 
-import requests
 from bs4 import BeautifulSoup
 
-from .brvm import HEADERS
+from .brvm import HEADERS, SESSION
 
 # id de page -> nom du secteur (classification officielle BRVM)
 SECTEURS = {
@@ -46,13 +45,15 @@ def fetch_secteurs() -> dict[str, str]:
     """Retourne {symbole: nom_du_secteur} pour toutes les actions cotees."""
     mapping: dict[str, str] = {}
     for page_id, nom_secteur in SECTEURS.items():
-        reponse = requests.get(
+        reponse = SESSION.get(
             URL_MODELE.format(id=page_id), headers=HEADERS, timeout=30
         )
         reponse.raise_for_status()
         reponse.encoding = "utf-8"
         for symbole in _symboles_de_la_page(reponse.text):
             mapping[symbole] = nom_secteur
+    if len(mapping) < 40:
+        raise RuntimeError(f"Classification sectorielle incomplète ({len(mapping)} actions)")
     return mapping
 
 

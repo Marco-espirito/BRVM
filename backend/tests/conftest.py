@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import os
 import tempfile
+import uuid
 from datetime import date
 from pathlib import Path
 
@@ -80,4 +81,16 @@ def base_de_demo():
 
 @pytest.fixture()
 def client():
-    return TestClient(app)
+    client = TestClient(app)
+    identifiant = uuid.uuid4().hex
+    reponse = client.post("/auth/inscription", json={
+        "email": f"test-{identifiant}@example.com",
+        "mot_de_passe": "mot-de-passe-test-solide",
+        "nom": "Test",
+    })
+    assert reponse.status_code == 200
+    depot = client.post("/portefeuille/especes", json={
+        "type": "DEPOT", "montant": 10_000_000,
+    })
+    assert depot.status_code == 200
+    return client

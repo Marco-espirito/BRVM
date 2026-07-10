@@ -1,13 +1,16 @@
 """Recupere les cotations et les enregistre en base (upsert par jour)."""
 from __future__ import annotations
 
+import os
 from datetime import date
 
 from sqlalchemy import text
 
 from .db import Base, SessionLocal, engine
-from .models import Cotation, Detachement, Dividende, Societe
-from .scraper.brvm import fetch_cotations
+from .models import (Alerte, Cotation, Detachement, Dividende, IndiceCotation,
+                     PortefeuilleUtilisateur, Position, Societe, Transaction, Utilisateur)
+from .scraper.brvm import fetch_cotations_et_date
+from .scraper.indices import fetch_indices
 from .scraper.dividendes import fetch_dividendes
 from .scraper.secteurs import fetch_secteurs
 
@@ -25,17 +28,83 @@ def creer_tables() -> None:
         if "secteur" not in colonnes:
             conn.execute(text("ALTER TABLE societes ADD COLUMN secteur VARCHAR"))
             conn.commit()
+        colonnes_transactions = [ligne[1] for ligne in conn.execute(text("PRAGMA table_info(transactions)"))]
+        if colonnes_transactions and "portefeuille_id" not in colonnes_transactions:
+            conn.execute(text("ALTER TABLE transactions ADD COLUMN portefeuille_id INTEGER"))
+            conn.commit()
+        colonnes_alertes = [ligne[1] for ligne in conn.execute(text("PRAGMA table_info(alertes)"))]
+        if colonnes_alertes and "utilisateur_id" not in colonnes_alertes:
+            conn.execute(text("ALTER TABLE alertes ADD COLUMN utilisateur_id INTEGER"))
+            conn.commit()
+        colonnes_portefeuilles = [ligne[1] for ligne in conn.execute(text("PRAGMA table_info(portefeuilles_utilisateur)"))]
+        if colonnes_portefeuilles and "solde_especes" not in colonnes_portefeuilles:
+            conn.execute(text("ALTER TABLE portefeuilles_utilisateur ADD COLUMN solde_especes FLOAT NOT NULL DEFAULT 0"))
+            conn.commit()
+        colonnes_mouvements = [ligne[1] for ligne in conn.execute(text("PRAGMA table_info(mouvements_especes)"))]
+        if colonnes_mouvements and "solde_apres" not in colonnes_mouvements:
+            conn.execute(text("ALTER TABLE mouvements_especes ADD COLUMN solde_apres FLOAT"))
+            conn.commit()
+    db = SessionLocal()
+    try:
+        if db.query(Transaction).count() == 0:
+            for p in db.query(Position).all():
+                brut = p.quantite * p.prix_achat
+                db.add(Transaction(symbole=p.symbole, type="ACHAT", quantite=p.quantite,
+                                   prix=p.prix_achat, jour=p.jour_achat,
+                                   frais_courtage=0, fiscalite=0, montant_net=brut))
+            db.commit()
+        if os.getenv("BRVM_CLAIM_LEGACY_DATA", "0") == "1" and db.query(Utilisateur).count() == 1:
+            utilisateur = db.query(Utilisateur).one()
+            portefeuille = db.query(PortefeuilleUtilisateur).filter_by(
+                utilisateur_id=utilisateur.id).order_by(PortefeuilleUtilisateur.cree_le).first()
+            if portefeuille:
+                db.query(Transaction).filter(Transaction.portefeuille_id.is_(None)).update(
+                    {"portefeuille_id": portefeuille.id})
+            db.query(Alerte).filter(Alerte.utilisateur_id.is_(None)).update(
+                {"utilisateur_id": utilisateur.id})
+            db.commit()
+    finally:
+        db.close()
 
 
 def enregistrer_cotations() -> int:
-    """Scrape la BRVM et enregistre une cotation par action pour aujourd'hui.
+    """Scrape la BRVM et enregistre les cotations d'aujourd'hui."""
+    actions, jour_marche = fetch_cotations_et_date()
+    return stocker_cotations(actions, jour_marche)
 
-    Retourne le nombre d'actions traitees. Si on relance le meme jour,
-    la cotation du jour est mise a jour (pas de doublon).
+
+def enregistrer_indices() -> int:
+    return stocker_indices(fetch_indices(), date.today())
+
+
+def stocker_indices(indices: list[dict], jour: date) -> int:
+    creer_tables()
+    db = SessionLocal()
+    try:
+        for valeur in indices:
+            ligne = db.query(IndiceCotation).filter_by(
+                code=valeur["code"], jour=jour
+            ).one_or_none()
+            if ligne is None:
+                ligne = IndiceCotation(code=valeur["code"], jour=jour,
+                                       cloture=valeur["cloture"])
+                db.add(ligne)
+            ligne.cloture = valeur["cloture"]
+            ligne.variation = valeur.get("variation")
+        db.commit()
+        return len(indices)
+    finally:
+        db.close()
+
+
+def stocker_cotations(actions: list[dict], jour: date) -> int:
+    """Enregistre des cotations pour un jour donne (upsert : idempotent).
+
+    Utilise par le scraping direct ET par l'import des donnees JSON
+    produites par le cron GitHub Actions.
     """
     creer_tables()
-    actions = fetch_cotations()
-    aujourdhui = date.today()
+    aujourdhui = jour
 
     db = SessionLocal()
     try:
@@ -72,8 +141,12 @@ def enregistrer_cotations() -> int:
 
 def enregistrer_secteurs() -> int:
     """Scrape les 7 pages sectorielles BRVM et met a jour les societes."""
+    return stocker_secteurs(fetch_secteurs())
+
+
+def stocker_secteurs(mapping: dict[str, str]) -> int:
+    """Applique un mapping symbole -> secteur aux societes connues."""
     creer_tables()
-    mapping = fetch_secteurs()
     db = SessionLocal()
     try:
         nb = 0
@@ -89,13 +162,20 @@ def enregistrer_secteurs() -> int:
 
 
 def enregistrer_dividendes() -> tuple[int, int]:
-    """Scrape Sika Finance et enregistre dividendes + prochains detachements.
+    """Scrape Sika Finance et enregistre dividendes + detachements."""
+    historique, prochains = fetch_dividendes()
+    return stocker_dividendes(historique, prochains)
+
+
+def stocker_dividendes(
+    historique: list[dict], prochains: list[dict]
+) -> tuple[int, int]:
+    """Enregistre dividendes + prochains detachements (upsert).
 
     Retourne (nb lignes historique, nb detachements). On ne garde que les
     societes deja connues en base (celles cotees a la BRVM).
     """
     creer_tables()
-    historique, prochains = fetch_dividendes()
 
     db = SessionLocal()
     try:
@@ -143,7 +223,15 @@ def enregistrer_dividendes() -> tuple[int, int]:
 if __name__ == "__main__":
     n = enregistrer_cotations()
     print(f"{n} cotations enregistrees pour le {date.today()}")
+    nb_indices = enregistrer_indices()
+    print(f"{nb_indices} indices de reference enregistres")
     nb_hist, nb_proch = enregistrer_dividendes()
     print(f"{nb_hist} dividendes (historique) et {nb_proch} detachements a venir")
     nb_secteurs = enregistrer_secteurs()
     print(f"{nb_secteurs} societes classees par secteur")
+    from .alertes import evaluer_alertes
+    db = SessionLocal()
+    try:
+        print(f"{len(evaluer_alertes(db))} alerte(s) declenchee(s)")
+    finally:
+        db.close()

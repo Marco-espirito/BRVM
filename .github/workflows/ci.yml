@@ -30,6 +30,11 @@ jobs:
       - name: Lancer les tests
         run: pytest -v
 
+      - name: Vérifier les dépendances et la syntaxe
+        run: |
+          pip check
+          python -m compileall app tests
+
   frontend-build:
     name: Build frontend (Vite)
     runs-on: ubuntu-latest
@@ -50,3 +55,6 @@ jobs:
 
       - name: Compiler le front
         run: npm run build
+
+      - name: Auditer les dépendances de production
+        run: npm audit --omit=dev

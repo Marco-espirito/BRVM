@@ -1,8 +1,10 @@
 """Tests des regles metier pures : pays, liquidite, tendance des dividendes."""
 from __future__ import annotations
 
-from app.main import _tendance_dividendes, classer_liquidite, pays_depuis_symbole
-from app.models import Dividende
+from datetime import date, timedelta
+
+from app.main import _indicateurs_techniques, _tendance_dividendes, classer_liquidite, pays_depuis_symbole
+from app.models import Cotation, Dividende
 
 
 # ------------------------------------------------------- pays_depuis_symbole
@@ -64,3 +66,16 @@ def test_tendance_irreguliere():
 def test_tendance_historique_trop_court():
     assert _tendance_dividendes(_serie((2025, 100))) is None
     assert _tendance_dividendes([]) is None
+
+
+def test_indicateurs_techniques_sur_60_seances():
+    cours = [Cotation(symbole="TEST", jour=date(2026, 1, 1) + timedelta(days=i),
+                      cours_cloture=100 + i, volume=1000 + i)
+             for i in range(60)]
+    indicateurs = _indicateurs_techniques(cours)
+    assert indicateurs.moyenne_mobile_20 == 149.5
+    assert indicateurs.moyenne_mobile_50 == 134.5
+    assert indicateurs.rsi_14 == 100.0
+    assert indicateurs.volume_moyen_20 == 1049.5
+    assert indicateurs.volatilite_20 is not None
+    assert len(indicateurs.points) == 60

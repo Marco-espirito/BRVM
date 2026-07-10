@@ -14,10 +14,9 @@ from __future__ import annotations
 
 import re
 
-import requests
 from bs4 import BeautifulSoup
 
-from .brvm import HEADERS, _to_float
+from .brvm import HEADERS, SESSION, _to_float
 
 URL = "https://www.sikafinance.com/marches/dividendes"
 
@@ -36,7 +35,7 @@ def _symbole_depuis_ligne(tr) -> str | None:
 
 def fetch_dividendes() -> tuple[list[dict], list[dict]]:
     """Telecharge la page Sika Finance et retourne les dividendes parses."""
-    reponse = requests.get(URL, headers=HEADERS, timeout=30)
+    reponse = SESSION.get(URL, headers=HEADERS, timeout=30)
     reponse.raise_for_status()
     return parse_dividendes(reponse.text)
 
@@ -52,6 +51,8 @@ def parse_dividendes(html: str) -> tuple[list[dict], list[dict]]:
     # --- 1) Historique par annee (tblDiv2) -------------------------------
     historique: list[dict] = []
     table_hist = soup.find("table", id="tblDiv2")
+    if table_hist is None:
+        raise RuntimeError("Tableau historique des dividendes introuvable")
     if table_hist is not None:
         lignes = table_hist.find_all("tr")
         # L'entete contient 'Div. 2022', 'Rend. 2022', ... -> on lit les annees
@@ -83,6 +84,8 @@ def parse_dividendes(html: str) -> tuple[list[dict], list[dict]]:
     # --- 2) Prochains detachements (tbdDiv) ------------------------------
     prochains: list[dict] = []
     table_cal = soup.find("table", id="tbdDiv")
+    if table_cal is None:
+        raise RuntimeError("Calendrier des dividendes introuvable")
     if table_cal is not None:
         for tr in table_cal.find_all("tr")[1:]:
             symbole = _symbole_depuis_ligne(tr)

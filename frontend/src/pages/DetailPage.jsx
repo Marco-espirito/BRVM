@@ -6,6 +6,7 @@ import {
   XAxis,
   YAxis,
   Tooltip,
+  Legend,
   CartesianGrid,
   ResponsiveContainer,
 } from "recharts";
@@ -34,6 +35,14 @@ export default function DetailPage() {
     dernierDiv && dernier?.cours_cloture
       ? (dernierDiv.montant / dernier.cours_cloture) * 100
       : null;
+  const p = action.performances ?? {};
+  const performanceItems = [
+    ["7 jours", p.variation_7j],
+    ["30 jours", p.variation_30j],
+    ["6 mois", p.variation_6m],
+    ["1 an", p.variation_1a],
+  ];
+  const technique = action.indicateurs_techniques ?? {};
 
   return (
     <div className="detail">
@@ -80,6 +89,26 @@ export default function DetailPage() {
         <AnalyseComparative action={action} marche={marche} />
       )}
 
+      <section className="bloc-performances">
+        <h2>Performances</h2>
+        <div className="cartes cartes-performance">
+          {performanceItems.map(([titre, valeur]) => (
+            <Carte
+              key={titre}
+              titre={titre}
+              valeur={valeur == null ? "Historique insuffisant" : `${valeur > 0 ? "+" : ""}${valeur.toFixed(2)}%`}
+              classe={valeur > 0 ? "hausse" : valeur < 0 ? "baisse" : ""}
+            />
+          ))}
+          <Carte titre="Plus haut 52 semaines" valeur={formatFCFA(p.plus_haut_52s)} />
+          <Carte titre="Plus bas 52 semaines" valeur={formatFCFA(p.plus_bas_52s)} />
+        </div>
+        <p className="explication">
+          Les variations utilisent la dernière séance disponible avant chaque échéance.
+          Les extrêmes portent sur l’historique réellement collecté, jusqu’à 52 semaines.
+        </p>
+      </section>
+
       {action.prochain_detachement && (
         <div className="encart-detachement">
           📅 <strong>Prochain dividende annoncé :</strong>{" "}
@@ -124,7 +153,21 @@ export default function DetailPage() {
         </>
       )}
 
-      <h2>Évolution du cours de clôture</h2>
+      <section className="indicateurs-techniques">
+        <h2>Indicateurs techniques simples</h2>
+        <p className="explication">Ces mesures décrivent les cours passés. Elles ne constituent ni un signal d’achat, ni un signal de vente.</p>
+        <div className="cartes cartes-performance">
+          <Carte titre="Moyenne mobile 20" valeur={formatFCFA(technique.moyenne_mobile_20)} />
+          <Carte titre="Moyenne mobile 50" valeur={formatFCFA(technique.moyenne_mobile_50)} />
+          <Carte titre="RSI (14 séances)" valeur={technique.rsi_14 == null ? "Historique insuffisant" : technique.rsi_14.toFixed(2)} />
+          <Carte titre="Volatilité annualisée (20)" valeur={technique.volatilite_20 == null ? "Historique insuffisant" : `${technique.volatilite_20.toFixed(2)}%`} />
+          <Carte titre="Volume moyen (20)" valeur={technique.volume_moyen_20 == null ? "—" : Math.round(technique.volume_moyen_20).toLocaleString("fr-FR")} />
+        </div>
+        {technique.rsi_14 != null && <div className="rsi-jauge"><div className="rsi-zones"><span>0</span><span>30</span><span>Zone intermédiaire</span><span>70</span><span>100</span></div><div className="rsi-piste"><i style={{ left: `${technique.rsi_14}%` }} /></div></div>}
+        <div className="explications-techniques">{technique.explications?.map((texte, i) => <p key={i}>💡 {texte}</p>)}</div>
+      </section>
+
+      <h2>Évolution du cours et moyennes mobiles</h2>
       {action.historique.length < 2 ? (
         <p className="info">
           Un seul point pour l'instant. Le graphique se remplira au fil des jours,
@@ -133,22 +176,53 @@ export default function DetailPage() {
       ) : (
         <div className="graphique">
           <ResponsiveContainer width="100%" height={320}>
-            <LineChart data={action.historique}>
+            <LineChart data={technique.points ?? []}>
               <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
               <XAxis dataKey="jour" />
               <YAxis domain={["auto", "auto"]} width={80} />
               <Tooltip formatter={(v) => formatFCFA(v)} />
+              <Legend />
               <Line
                 type="monotone"
-                dataKey="cours_cloture"
+                dataKey="cours"
                 stroke="#2563eb"
                 strokeWidth={2}
                 dot={false}
                 name="Clôture"
               />
+              <Line type="monotone" dataKey="moyenne_mobile_20" stroke="#f59e0b" strokeWidth={2} dot={false} connectNulls name="Moyenne 20" />
+              <Line type="monotone" dataKey="moyenne_mobile_50" stroke="#7c3aed" strokeWidth={2} dot={false} connectNulls name="Moyenne 50" />
             </LineChart>
           </ResponsiveContainer>
         </div>
+      )}
+
+      <h2>Comparaison avec le marché</h2>
+      {action.comparaison_indices?.length < 2 ? (
+        <p className="info">
+          La comparaison apparaîtra après au moins deux séances communes enregistrées
+          pour l’action, le BRVM Composite et le BRVM 30.
+        </p>
+      ) : (
+        <>
+          <p className="explication">
+            Base 100 au premier jour commun : 105 correspond à une hausse de 5 %.
+          </p>
+          <div className="graphique">
+            <ResponsiveContainer width="100%" height={340}>
+              <LineChart data={action.comparaison_indices}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
+                <XAxis dataKey="jour" />
+                <YAxis domain={["auto", "auto"]} width={55} />
+                <Tooltip formatter={(v) => Number(v).toFixed(2)} />
+                <Legend />
+                <Line type="monotone" dataKey="action" stroke="#2563eb" strokeWidth={3} dot={false} name={action.symbole} />
+                <Line type="monotone" dataKey="brvm_composite" stroke="#16a34a" strokeWidth={2} dot={false} name="BRVM Composite" />
+                <Line type="monotone" dataKey="brvm_30" stroke="#f59e0b" strokeWidth={2} dot={false} name="BRVM 30" />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </>
       )}
     </div>
   );

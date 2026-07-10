@@ -3,7 +3,8 @@ un site change sa structure HTML. Les fixtures reproduisent la structure
 reelle de brvm.org et sikafinance.com au 2026-07-10."""
 from __future__ import annotations
 
-from app.scraper.brvm import _to_float, parse_cotations
+from app.scraper.brvm import _to_float, extraire_date_marche, parse_cotations
+from app.scraper.indices import parse_indices
 from app.scraper.dividendes import parse_dividendes
 from app.scraper.secteurs import _symboles_de_la_page
 
@@ -54,6 +55,22 @@ def test_parse_cotations_page_inattendue():
         parse_cotations("<html><body><p>rien ici</p></body></html>")
 
 
+def test_date_de_marche_publiee():
+    assert extraire_date_marche("<p>Dernière mise à jour : Mercredi, 8 juillet, 2026 - 22:45</p>").isoformat() == "2026-07-08"
+
+
+def test_parse_indices_reference():
+    html = """
+    <table><tr><td>BRVM-30</td><td>217,73</td><td>222,20</td><td>2,05</td></tr>
+    <tr><td>BRVM - COMPOSITE</td><td>463,89</td><td>470,48</td><td>1,42</td></tr></table>
+    """
+    indices = parse_indices(html)
+    assert indices == [
+        {"code": "BRVM-30", "cloture": 222.2, "variation": 2.05},
+        {"code": "BRVM-COMPOSITE", "cloture": 470.48, "variation": 1.42},
+    ]
+
+
 # --------------------------------------------------------- parse_dividendes
 def test_parse_dividendes_historique():
     historique, _ = parse_dividendes(lire_fixture("dividendes.html"))
@@ -82,6 +99,12 @@ def test_parse_dividendes_prochains_detachements():
     stbc = prochains[1]
     assert stbc["symbole"] == "STBC"
     assert stbc["montant"] == 1707.2
+
+
+def test_dividendes_page_inattendue():
+    import pytest
+    with pytest.raises(RuntimeError):
+        parse_dividendes("<html><body>maintenance</body></html>")
 
 
 # ------------------------------------------------------------------ secteurs

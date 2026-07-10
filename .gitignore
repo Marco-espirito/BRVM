@@ -7,6 +7,8 @@ venv/
 # Base de donnees locale (l'historique de chacun est personnel)
 *.db
 *.sqlite3
+*.db-wal
+*.db-shm
 
 # Log du scraping quotidien (change chaque jour, aucun interet versionne)
 backend/ingest_log.txt

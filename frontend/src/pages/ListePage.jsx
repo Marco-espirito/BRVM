@@ -1,15 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { getActions, getTopActions, refresh, formatFCFA } from "../api.js";
-
-// Watchlist : simple liste de symboles stockee dans le navigateur.
-function lireWatchlist() {
-  try {
-    return JSON.parse(localStorage.getItem("watchlist")) ?? [];
-  } catch {
-    return [];
-  }
-}
+import { ajouterWatchlist, getActions, getTopActions, getWatchlist, retirerWatchlist, formatFCFA } from "../api.js";
 
 // Drapeaux des pays de l'UEMOA representes a la BRVM.
 const DRAPEAUX = {
@@ -64,8 +55,7 @@ export default function ListePage() {
   const [erreur, setErreur] = useState(null);
   const [recherche, setRecherche] = useState("");
   const [tri, setTri] = useState({ champ: "symbole", sens: 1 });
-  const [watchlist, setWatchlist] = useState(lireWatchlist);
-  const [rafraichit, setRafraichit] = useState(false);
+  const [watchlist, setWatchlist] = useState([]);
   const [paysActif, setPaysActif] = useState(null); // null = tous
   const [secteurActif, setSecteurActif] = useState(null); // null = tous
 
@@ -79,6 +69,8 @@ export default function ListePage() {
         getActions(),
         getTopActions(47).catch(() => []),
       ]);
+      const favorisSynchronises = await getWatchlist();
+      setWatchlist(favorisSynchronises);
       const scoreParSymbole = Object.fromEntries(
         scores.map((s) => [s.symbole, s.score])
       );
@@ -96,26 +88,15 @@ export default function ListePage() {
     charger();
   }, []);
 
-  async function rafraichir() {
-    setRafraichit(true);
-    try {
-      await refresh(); // relance le scraping cote backend
-      await charger();
-    } catch (e) {
-      setErreur(e.message);
-    } finally {
-      setRafraichit(false);
-    }
-  }
-
-  function toggleEtoile(symbole) {
+  async function toggleEtoile(symbole) {
     setWatchlist((w) => {
       const nouvelle = w.includes(symbole)
         ? w.filter((s) => s !== symbole)
         : [...w, symbole];
-      localStorage.setItem("watchlist", JSON.stringify(nouvelle));
       return nouvelle;
     });
+    if (watchlist.includes(symbole)) await retirerWatchlist(symbole);
+    else await ajouterWatchlist(symbole);
   }
 
   // Les deux filtres se repondent : le panneau Pays compte dans le perimetre
@@ -209,9 +190,6 @@ export default function ListePage() {
           value={recherche}
           onChange={(e) => setRecherche(e.target.value)}
         />
-        <button className="btn" onClick={rafraichir} disabled={rafraichit}>
-          {rafraichit ? "⏳ Scraping en cours…" : "🔄 Rafraîchir les cours"}
-        </button>
       </div>
 
       <div className="filtres-barre">
@@ -286,7 +264,7 @@ export default function ListePage() {
         )}
       </div>
 
-      <table className="tableau">
+      <div className="table-scroll table-scroll-principal"><table className="tableau">
         <thead>
           <tr>
             <th className="col-etoile" title="Ta watchlist : clique sur l'étoile pour épingler une action en haut de la liste.">⭐</th>
@@ -307,6 +285,7 @@ export default function ListePage() {
             <th onClick={() => trierPar("volume")} className="num" title={AIDE.volume}>
               Volume ⓘ
             </th>
+            <th>Achat</th>
           </tr>
         </thead>
         <tbody>
@@ -380,11 +359,20 @@ export default function ListePage() {
                   )}
                   {a.volume?.toLocaleString("fr-FR") ?? "-"}
                 </td>
+                <td>
+                  <Link
+                    className="btn-mini-acheter"
+                    to={`/portefeuille?acheter=${encodeURIComponent(a.symbole)}`}
+                    title={`Acheter des actions ${a.symbole}`}
+                  >
+                    Acheter
+                  </Link>
+                </td>
               </tr>
             );
           })}
         </tbody>
-      </table>
+      </table></div>
       <p className="compteur">
         {affichees.length} actions affichées
         {tri.champ === "score" &&

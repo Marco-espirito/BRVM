@@ -9,7 +9,12 @@ une liste de dictionnaires, un par action.
 from __future__ import annotations
 
 import requests
+import re
+import unicodedata
+from datetime import date
 from bs4 import BeautifulSoup
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 URL = "https://www.brvm.org/fr/cours-actions/0"
 HEADERS = {
@@ -18,6 +23,11 @@ HEADERS = {
         "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36"
     )
 }
+SESSION = requests.Session()
+SESSION.mount("https://", HTTPAdapter(max_retries=Retry(
+    total=3, backoff_factor=1, status_forcelist=(429, 500, 502, 503, 504),
+    allowed_methods=("GET",),
+)))
 
 
 def _to_float(texte: str) -> float | None:
@@ -45,10 +55,39 @@ def _to_float(texte: str) -> float | None:
 
 def fetch_cotations() -> list[dict]:
     """Telecharge la page officielle et retourne les cotations parsees."""
-    reponse = requests.get(URL, headers=HEADERS, timeout=30)
+    reponse = SESSION.get(URL, headers=HEADERS, timeout=30)
     reponse.raise_for_status()
     reponse.encoding = "utf-8"
-    return parse_cotations(reponse.text)
+    actions = parse_cotations(reponse.text)
+    if len(actions) < 40:
+        raise RuntimeError(f"Seulement {len(actions)} actions trouvées : ingestion annulée")
+    return actions
+
+
+def fetch_cotations_et_date() -> tuple[list[dict], date]:
+    """Retourne les cours et la date de séance affichée par la BRVM."""
+    reponse = SESSION.get(URL, headers=HEADERS, timeout=30)
+    reponse.raise_for_status()
+    reponse.encoding = "utf-8"
+    actions = parse_cotations(reponse.text)
+    if len(actions) < 40:
+        raise RuntimeError(f"Seulement {len(actions)} actions trouvées : ingestion annulée")
+    return actions, extraire_date_marche(reponse.text)
+
+
+def extraire_date_marche(html: str) -> date:
+    texte = BeautifulSoup(html, "lxml").get_text(" ", strip=True)
+    normalise = unicodedata.normalize("NFKD", texte).encode("ascii", "ignore").decode().lower()
+    zone = normalise[normalise.find("derniere mise a jour"):]
+    mois = {"janvier": 1, "fevrier": 2, "mars": 3, "avril": 4, "mai": 5,
+            "juin": 6, "juillet": 7, "aout": 8, "septembre": 9,
+            "octobre": 10, "novembre": 11, "decembre": 12}
+    motif = r"(\d{1,2})\s+(" + "|".join(mois) + r")\s*,?\s*(\d{4})"
+    correspondance = re.search(motif, zone)
+    if not correspondance:
+        raise RuntimeError("Date de séance BRVM introuvable : aucune donnée ne sera datée artificiellement.")
+    jour, nom_mois, annee = correspondance.groups()
+    return date(int(annee), mois[nom_mois], int(jour))
 
 
 def parse_cotations(html: str) -> list[dict]:

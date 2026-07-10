@@ -4,7 +4,7 @@ from __future__ import annotations
 import os
 from pathlib import Path
 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, event
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
 # La base est un simple fichier a la racine du backend : brvm.db.
@@ -14,6 +14,15 @@ DB_PATH = Path(os.environ.get("BRVM_DB_PATH", BASE_DIR / "brvm.db"))
 DATABASE_URL = f"sqlite:///{DB_PATH}"
 
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
+
+
+@event.listens_for(engine, "connect")
+def _configurer_sqlite(dbapi_connection, _connection_record):
+    curseur = dbapi_connection.cursor()
+    curseur.execute("PRAGMA foreign_keys=ON")
+    curseur.execute("PRAGMA journal_mode=WAL")
+    curseur.execute("PRAGMA busy_timeout=5000")
+    curseur.close()
 SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
 
 

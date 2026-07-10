@@ -1,0 +1,930 @@
+{
+ "historique": [
+  {
+   "symbole": "SDSC",
+   "annee": 2022,
+   "montant": 83.0,
+   "rendement": 3.22
+  },
+  {
+   "symbole": "SDSC",
+   "annee": 2023,
+   "montant": 92.0,
+   "rendement": 6.59
+  },
+  {
+   "symbole": "SDSC",
+   "annee": 2024,
+   "montant": 92.0,
+   "rendement": 6.81
+  },
+  {
+   "symbole": "BOAB",
+   "annee": 2022,
+   "montant": 273.0,
+   "rendement": 10.3
+  },
+  {
+   "symbole": "BOAB",
+   "annee": 2023,
+   "montant": 353.0,
+   "rendement": 11.87
+  },
+  {
+   "symbole": "BOAB",
+   "annee": 2024,
+   "montant": 468.0,
+   "rendement": 14.72
+  },
+  {
+   "symbole": "BOAB",
+   "annee": 2025,
+   "montant": 585.0,
+   "rendement": 15.88
+  },
+  {
+   "symbole": "BOABF",
+   "annee": 2022,
+   "montant": 224.0,
+   "rendement": 7.23
+  },
+  {
+   "symbole": "BOABF",
+   "annee": 2023,
+   "montant": 352.0,
+   "rendement": 13.54
+  },
+  {
+   "symbole": "BOABF",
+   "annee": 2024,
+   "montant": 428.0,
+   "rendement": 12.26
+  },
+  {
+   "symbole": "BOABF",
+   "annee": 2025,
+   "montant": 397.0,
+   "rendement": 13.08
+  },
+  {
+   "symbole": "BOAC",
+   "annee": 2022,
+   "montant": 270.0,
+   "rendement": 4.61
+  },
+  {
+   "symbole": "BOAC",
+   "annee": 2023,
+   "montant": 342.0,
+   "rendement": 9.24
+  },
+  {
+   "symbole": "BOAC",
+   "annee": 2024,
+   "montant": 459.0,
+   "rendement": 13.31
+  },
+  {
+   "symbole": "BOAC",
+   "annee": 2025,
+   "montant": 595.0,
+   "rendement": 11.9
+  },
+  {
+   "symbole": "BOAM",
+   "annee": 2023,
+   "montant": 96.0,
+   "rendement": 10.29
+  },
+  {
+   "symbole": "BOAM",
+   "annee": 2024,
+   "montant": 237.0,
+   "rendement": 24.12
+  },
+  {
+   "symbole": "BOAM",
+   "annee": 2025,
+   "montant": 305.0,
+   "rendement": 16.14
+  },
+  {
+   "symbole": "BOAN",
+   "annee": 2022,
+   "montant": 355.0,
+   "rendement": 11.12
+  },
+  {
+   "symbole": "BOAN",
+   "annee": 2023,
+   "montant": 381.0,
+   "rendement": 10.53
+  },
+  {
+   "symbole": "BOAN",
+   "annee": 2024,
+   "montant": 209.0,
+   "rendement": 6.21
+  },
+  {
+   "symbole": "BOAS",
+   "annee": 2022,
+   "montant": 125.0,
+   "rendement": 7.98
+  },
+  {
+   "symbole": "BOAS",
+   "annee": 2023,
+   "montant": 200.0,
+   "rendement": 12.24
+  },
+  {
+   "symbole": "BOAS",
+   "annee": 2024,
+   "montant": 350.0,
+   "rendement": 16.41
+  },
+  {
+   "symbole": "BOAS",
+   "annee": 2025,
+   "montant": 450.0,
+   "rendement": 14.29
+  },
+  {
+   "symbole": "BICB",
+   "annee": 2024,
+   "montant": 255.0,
+   "rendement": null
+  },
+  {
+   "symbole": "BICB",
+   "annee": 2025,
+   "montant": 255.0,
+   "rendement": null
+  },
+  {
+   "symbole": "BNBC",
+   "annee": 2022,
+   "montant": 150.0,
+   "rendement": 6.9
+  },
+  {
+   "symbole": "BICC",
+   "annee": 2022,
+   "montant": 402.0,
+   "rendement": 5.43
+  },
+  {
+   "symbole": "BICC",
+   "annee": 2023,
+   "montant": 541.0,
+   "rendement": 7.9
+  },
+  {
+   "symbole": "BICC",
+   "annee": 2024,
+   "montant": 831.0,
+   "rendement": 11.09
+  },
+  {
+   "symbole": "BICC",
+   "annee": 2025,
+   "montant": 1157.0,
+   "rendement": 8.27
+  },
+  {
+   "symbole": "CFAC",
+   "annee": 2022,
+   "montant": 29.0,
+   "rendement": 2.41
+  },
+  {
+   "symbole": "CFAC",
+   "annee": 2023,
+   "montant": 16.0,
+   "rendement": 1.71
+  },
+  {
+   "symbole": "CFAC",
+   "annee": 2024,
+   "montant": 7.0,
+   "rendement": 0.84
+  },
+  {
+   "symbole": "CFAC",
+   "annee": 2025,
+   "montant": 55.0,
+   "rendement": 9.24
+  },
+  {
+   "symbole": "CIEC",
+   "annee": 2022,
+   "montant": 158.0,
+   "rendement": 8.31
+  },
+  {
+   "symbole": "CIEC",
+   "annee": 2023,
+   "montant": 171.0,
+   "rendement": 8.59
+  },
+  {
+   "symbole": "CIEC",
+   "annee": 2024,
+   "montant": 158.0,
+   "rendement": 9.32
+  },
+  {
+   "symbole": "CIEC",
+   "annee": 2025,
+   "montant": 206.0,
+   "rendement": 9.38
+  },
+  {
+   "symbole": "CBIBF",
+   "annee": 2022,
+   "montant": 525.0,
+   "rendement": 5.0
+  },
+  {
+   "symbole": "CBIBF",
+   "annee": 2023,
+   "montant": 790.0,
+   "rendement": 9.42
+  },
+  {
+   "symbole": "CBIBF",
+   "annee": 2024,
+   "montant": 555.0,
+   "rendement": 5.97
+  },
+  {
+   "symbole": "CBIBF",
+   "annee": 2025,
+   "montant": 900.0,
+   "rendement": 9.1
+  },
+  {
+   "symbole": "ECOC",
+   "annee": 2022,
+   "montant": 549.0,
+   "rendement": 11.47
+  },
+  {
+   "symbole": "ECOC",
+   "annee": 2023,
+   "montant": 594.0,
+   "rendement": 12.01
+  },
+  {
+   "symbole": "ECOC",
+   "annee": 2024,
+   "montant": 708.0,
+   "rendement": 10.41
+  },
+  {
+   "symbole": "ECOC",
+   "annee": 2025,
+   "montant": 781.0,
+   "rendement": 8.88
+  },
+  {
+   "symbole": "ETIT",
+   "annee": 2022,
+   "montant": 1.0,
+   "rendement": 3.36
+  },
+  {
+   "symbole": "ETIT",
+   "annee": 2025,
+   "montant": 1.0,
+   "rendement": 5.74
+  },
+  {
+   "symbole": "FTSC",
+   "annee": 2023,
+   "montant": 130.0,
+   "rendement": 8.13
+  },
+  {
+   "symbole": "FTSC",
+   "annee": 2024,
+   "montant": 1727.0,
+   "rendement": 93.83
+  },
+  {
+   "symbole": "LNBB",
+   "annee": 2022,
+   "montant": 107.0,
+   "rendement": null
+  },
+  {
+   "symbole": "LNBB",
+   "annee": 2024,
+   "montant": 276.0,
+   "rendement": null
+  },
+  {
+   "symbole": "LNBB",
+   "annee": 2025,
+   "montant": 164.0,
+   "rendement": 3.47
+  },
+  {
+   "symbole": "NEIC",
+   "annee": 2022,
+   "montant": 35.0,
+   "rendement": 5.64
+  },
+  {
+   "symbole": "NEIC",
+   "annee": 2023,
+   "montant": 82.0,
+   "rendement": 10.22
+  },
+  {
+   "symbole": "NEIC",
+   "annee": 2025,
+   "montant": 140.0,
+   "rendement": 18.72
+  },
+  {
+   "symbole": "NTLC",
+   "annee": 2022,
+   "montant": 728.0,
+   "rendement": 15.81
+  },
+  {
+   "symbole": "NTLC",
+   "annee": 2023,
+   "montant": 675.0,
+   "rendement": 8.19
+  },
+  {
+   "symbole": "NTLC",
+   "annee": 2024,
+   "montant": 722.0,
+   "rendement": 9.78
+  },
+  {
+   "symbole": "NTLC",
+   "annee": 2025,
+   "montant": 370.0,
+   "rendement": 4.64
+  },
+  {
+   "symbole": "NSBC",
+   "annee": 2022,
+   "montant": 364.0,
+   "rendement": 5.88
+  },
+  {
+   "symbole": "NSBC",
+   "annee": 2023,
+   "montant": 455.0,
+   "rendement": 7.62
+  },
+  {
+   "symbole": "NSBC",
+   "annee": 2024,
+   "montant": 671.0,
+   "rendement": 11.18
+  },
+  {
+   "symbole": "NSBC",
+   "annee": 2025,
+   "montant": 676.0,
+   "rendement": 9.53
+  },
+  {
+   "symbole": "ONTBF",
+   "annee": 2022,
+   "montant": 288.0,
+   "rendement": 7.3
+  },
+  {
+   "symbole": "ONTBF",
+   "annee": 2023,
+   "montant": 266.0,
+   "rendement": 8.33
+  },
+  {
+   "symbole": "ONTBF",
+   "annee": 2024,
+   "montant": 195.0,
+   "rendement": 8.55
+  },
+  {
+   "symbole": "ONTBF",
+   "annee": 2025,
+   "montant": 145.0,
+   "rendement": 6.33
+  },
+  {
+   "symbole": "ORAC",
+   "annee": 2022,
+   "montant": 753.0,
+   "rendement": 7.37
+  },
+  {
+   "symbole": "ORAC",
+   "annee": 2023,
+   "montant": 780.0,
+   "rendement": 7.64
+  },
+  {
+   "symbole": "ORAC",
+   "annee": 2024,
+   "montant": 660.0,
+   "rendement": 6.06
+  },
+  {
+   "symbole": "ORAC",
+   "annee": 2025,
+   "montant": 704.0,
+   "rendement": 4.02
+  },
+  {
+   "symbole": "PALC",
+   "annee": 2022,
+   "montant": 1214.0,
+   "rendement": 17.36
+  },
+  {
+   "symbole": "PALC",
+   "annee": 2023,
+   "montant": 563.0,
+   "rendement": 5.42
+  },
+  {
+   "symbole": "PALC",
+   "annee": 2024,
+   "montant": 451.0,
+   "rendement": 6.68
+  },
+  {
+   "symbole": "PALC",
+   "annee": 2025,
+   "montant": 441.0,
+   "rendement": 8.83
+  },
+  {
+   "symbole": "SPHC",
+   "annee": 2022,
+   "montant": 294.0,
+   "rendement": 5.67
+  },
+  {
+   "symbole": "SPHC",
+   "annee": 2023,
+   "montant": 65.0,
+   "rendement": 1.3
+  },
+  {
+   "symbole": "SPHC",
+   "annee": 2024,
+   "montant": 324.0,
+   "rendement": 13.79
+  },
+  {
+   "symbole": "SPHC",
+   "annee": 2025,
+   "montant": 430.0,
+   "rendement": 10.39
+  },
+  {
+   "symbole": "ABJC",
+   "annee": 2022,
+   "montant": 83.0,
+   "rendement": 4.73
+  },
+  {
+   "symbole": "ABJC",
+   "annee": 2023,
+   "montant": 206.0,
+   "rendement": 15.91
+  },
+  {
+   "symbole": "ABJC",
+   "annee": 2025,
+   "montant": 202.0,
+   "rendement": 10.61
+  },
+  {
+   "symbole": "SGBC",
+   "annee": 2022,
+   "montant": 1107.0,
+   "rendement": 10.45
+  },
+  {
+   "symbole": "SGBC",
+   "annee": 2023,
+   "montant": 1547.0,
+   "rendement": 13.33
+  },
+  {
+   "symbole": "SGBC",
+   "annee": 2024,
+   "montant": 1639.0,
+   "rendement": 10.21
+  },
+  {
+   "symbole": "SGBC",
+   "annee": 2025,
+   "montant": 2293.0,
+   "rendement": 10.92
+  },
+  {
+   "symbole": "CABC",
+   "annee": 2022,
+   "montant": 69.0,
+   "rendement": 6.8
+  },
+  {
+   "symbole": "CABC",
+   "annee": 2023,
+   "montant": 80.0,
+   "rendement": 6.8
+  },
+  {
+   "symbole": "CABC",
+   "annee": 2024,
+   "montant": 113.0,
+   "rendement": 10.16
+  },
+  {
+   "symbole": "CABC",
+   "annee": 2025,
+   "montant": 152.0,
+   "rendement": 14.62
+  },
+  {
+   "symbole": "STBC",
+   "annee": 2022,
+   "montant": 540.0,
+   "rendement": 8.74
+  },
+  {
+   "symbole": "STBC",
+   "annee": 2023,
+   "montant": 675.0,
+   "rendement": 9.85
+  },
+  {
+   "symbole": "STBC",
+   "annee": 2024,
+   "montant": 2090.0,
+   "rendement": 35.16
+  },
+  {
+   "symbole": "STBC",
+   "annee": 2025,
+   "montant": 1707.0,
+   "rendement": 23.39
+  },
+  {
+   "symbole": "SMBC",
+   "annee": 2022,
+   "montant": 720.0,
+   "rendement": 10.43
+  },
+  {
+   "symbole": "SMBC",
+   "annee": 2023,
+   "montant": 1080.0,
+   "rendement": 15.88
+  },
+  {
+   "symbole": "SMBC",
+   "annee": 2024,
+   "montant": 616.0,
+   "rendement": 5.85
+  },
+  {
+   "symbole": "SMBC",
+   "annee": 2025,
+   "montant": 704.0,
+   "rendement": 8.18
+  },
+  {
+   "symbole": "SIBC",
+   "annee": 2022,
+   "montant": 248.0,
+   "rendement": 6.21
+  },
+  {
+   "symbole": "SIBC",
+   "annee": 2023,
+   "montant": 248.0,
+   "rendement": 5.4
+  },
+  {
+   "symbole": "SIBC",
+   "annee": 2024,
+   "montant": 330.0,
+   "rendement": 12.34
+  },
+  {
+   "symbole": "SIBC",
+   "annee": 2025,
+   "montant": 374.0,
+   "rendement": 10.52
+  },
+  {
+   "symbole": "SDCC",
+   "annee": 2022,
+   "montant": 450.0,
+   "rendement": 10.48
+  },
+  {
+   "symbole": "SDCC",
+   "annee": 2023,
+   "montant": 482.0,
+   "rendement": 8.82
+  },
+  {
+   "symbole": "SDCC",
+   "annee": 2024,
+   "montant": 352.0,
+   "rendement": 7.38
+  },
+  {
+   "symbole": "SDCC",
+   "annee": 2025,
+   "montant": 462.0,
+   "rendement": 8.13
+  },
+  {
+   "symbole": "SOGC",
+   "annee": 2022,
+   "montant": 554.0,
+   "rendement": 11.09
+  },
+  {
+   "symbole": "SOGC",
+   "annee": 2023,
+   "montant": 207.0,
+   "rendement": 3.65
+  },
+  {
+   "symbole": "SOGC",
+   "annee": 2024,
+   "montant": 528.0,
+   "rendement": 16.15
+  },
+  {
+   "symbole": "SOGC",
+   "annee": 2025,
+   "montant": 502.0,
+   "rendement": 10.88
+  },
+  {
+   "symbole": "SLBC",
+   "annee": 2023,
+   "montant": 270.0,
+   "rendement": 3.24
+  },
+  {
+   "symbole": "SLBC",
+   "annee": 2024,
+   "montant": 1074.0,
+   "rendement": 12.34
+  },
+  {
+   "symbole": "SLBC",
+   "annee": 2025,
+   "montant": 1872.0,
+   "rendement": 14.45
+  },
+  {
+   "symbole": "SNTS",
+   "annee": 2022,
+   "montant": 1500.0,
+   "rendement": 10.73
+  },
+  {
+   "symbole": "SNTS",
+   "annee": 2023,
+   "montant": 1575.0,
+   "rendement": 10.36
+  },
+  {
+   "symbole": "SNTS",
+   "annee": 2024,
+   "montant": 1655.0,
+   "rendement": 9.2
+  },
+  {
+   "symbole": "SNTS",
+   "annee": 2025,
+   "montant": 1740.0,
+   "rendement": 7.25
+  },
+  {
+   "symbole": "TTLC",
+   "annee": 2022,
+   "montant": 176.0,
+   "rendement": 8.36
+  },
+  {
+   "symbole": "TTLC",
+   "annee": 2023,
+   "montant": 200.0,
+   "rendement": 10.55
+  },
+  {
+   "symbole": "TTLC",
+   "annee": 2024,
+   "montant": 196.0,
+   "rendement": 10.87
+  },
+  {
+   "symbole": "TTLC",
+   "annee": 2025,
+   "montant": 140.0,
+   "rendement": 5.6
+  },
+  {
+   "symbole": "TTLS",
+   "annee": 2022,
+   "montant": 234.0,
+   "rendement": 11.85
+  },
+  {
+   "symbole": "TTLS",
+   "annee": 2023,
+   "montant": 208.0,
+   "rendement": 8.19
+  },
+  {
+   "symbole": "TTLS",
+   "annee": 2024,
+   "montant": 222.0,
+   "rendement": 8.9
+  },
+  {
+   "symbole": "PRSC",
+   "annee": 2022,
+   "montant": 224.0,
+   "rendement": 5.34
+  },
+  {
+   "symbole": "PRSC",
+   "annee": 2023,
+   "montant": 183.0,
+   "rendement": 5.73
+  },
+  {
+   "symbole": "PRSC",
+   "annee": 2024,
+   "montant": 182.0,
+   "rendement": 9.59
+  },
+  {
+   "symbole": "PRSC",
+   "annee": 2025,
+   "montant": 184.0,
+   "rendement": 8.36
+  },
+  {
+   "symbole": "SHEC",
+   "annee": 2022,
+   "montant": 53.0,
+   "rendement": 6.16
+  },
+  {
+   "symbole": "SHEC",
+   "annee": 2023,
+   "montant": 57.0,
+   "rendement": 7.6
+  },
+  {
+   "symbole": "SHEC",
+   "annee": 2024,
+   "montant": 75.0,
+   "rendement": 9.49
+  },
+  {
+   "symbole": "SHEC",
+   "annee": 2025,
+   "montant": 85.0,
+   "rendement": 9.67
+  }
+ ],
+ "prochains": [
+  {
+   "symbole": "BICB",
+   "date_detachement": "13/07/2026",
+   "montant": 254.6,
+   "rendement": 4.01
+  },
+  {
+   "symbole": "TTLS",
+   "date_detachement": "16/07/2026",
+   "montant": 176.65,
+   "rendement": 4.15
+  },
+  {
+   "symbole": "SIBC",
+   "date_detachement": "30/07/2026",
+   "montant": 425.0,
+   "rendement": 4.75
+  },
+  {
+   "symbole": "ABJC",
+   "date_detachement": "29/09/2026",
+   "montant": 124.0,
+   "rendement": 3.94
+  },
+  {
+   "symbole": "STBC",
+   "date_detachement": "A préciser",
+   "montant": 1707.2,
+   "rendement": 7.08
+  },
+  {
+   "symbole": "CFAC",
+   "date_detachement": "A préciser",
+   "montant": 55.44,
+   "rendement": 3.52
+  },
+  {
+   "symbole": "SLBC",
+   "date_detachement": "A préciser",
+   "montant": 1871.76,
+   "rendement": 4.69
+  },
+  {
+   "symbole": "NSBC",
+   "date_detachement": "A préciser",
+   "montant": 675.98,
+   "rendement": 3.12
+  },
+  {
+   "symbole": "SHEC",
+   "date_detachement": "A préciser",
+   "montant": 85.07,
+   "rendement": 3.86
+  },
+  {
+   "symbole": "CIEC",
+   "date_detachement": "A préciser",
+   "montant": 205.92,
+   "rendement": 3.86
+  },
+  {
+   "symbole": "SMBC",
+   "date_detachement": "A préciser",
+   "montant": 704.0,
+   "rendement": 4.07
+  },
+  {
+   "symbole": "LNBB",
+   "date_detachement": "A préciser",
+   "montant": 164.0,
+   "rendement": 3.71
+  },
+  {
+   "symbole": "PRSC",
+   "date_detachement": "A préciser",
+   "montant": 183.92,
+   "rendement": 4.3
+  },
+  {
+   "symbole": "NTLC",
+   "date_detachement": "A préciser",
+   "montant": 369.6,
+   "rendement": 2.27
+  },
+  {
+   "symbole": "SDCC",
+   "date_detachement": "A préciser",
+   "montant": 462.0,
+   "rendement": 3.81
+  },
+  {
+   "symbole": "NEIC",
+   "date_detachement": "A préciser",
+   "montant": 140.39,
+   "rendement": 7.02
+  },
+  {
+   "symbole": "SGBC",
+   "date_detachement": "A préciser",
+   "montant": 2293.28,
+   "rendement": 5.88
+  },
+  {
+   "symbole": "TTLC",
+   "date_detachement": "A préciser",
+   "montant": 139.77,
+   "rendement": 4.99
+  },
+  {
+   "symbole": "SPHC",
+   "date_detachement": "A préciser",
+   "montant": 430.32,
+   "rendement": 5.7
+  }
+ ]
+}

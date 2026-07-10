@@ -1,0 +1,25 @@
+services:
+  backend:
+    build: ./backend
+    environment:
+      BRVM_DB_PATH: /state/brvm.db
+      BRVM_CORS_ORIGINS: http://localhost:8080
+      COOKIE_SECURE: "0"
+      BRVM_ALLOW_USER_REFRESH: "1"
+    volumes:
+      - brvm-state:/state
+      - ./data:/data:ro
+    command: sh -c "python -m app.import_data && python -m uvicorn app.main:app --host 0.0.0.0 --port 8000"
+    ports:
+      - "8000:8000"
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: http://localhost:8000
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+volumes:
+  brvm-state:
