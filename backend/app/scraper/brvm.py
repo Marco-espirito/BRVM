@@ -44,17 +44,21 @@ def _to_float(texte: str) -> float | None:
 
 
 def fetch_cotations() -> list[dict]:
-    """Recupere la liste des actions cotees a la BRVM avec leurs cours.
+    """Telecharge la page officielle et retourne les cotations parsees."""
+    reponse = requests.get(URL, headers=HEADERS, timeout=30)
+    reponse.raise_for_status()
+    reponse.encoding = "utf-8"
+    return parse_cotations(reponse.text)
+
+
+def parse_cotations(html: str) -> list[dict]:
+    """Parse le HTML de la page des cours et retourne les actions.
 
     Retourne une liste de dicts :
     {symbole, nom, volume, cours_veille, cours_ouverture,
      cours_cloture, variation}
     """
-    reponse = requests.get(URL, headers=HEADERS, timeout=30)
-    reponse.raise_for_status()
-    reponse.encoding = "utf-8"
-
-    soup = BeautifulSoup(reponse.text, "lxml")
+    soup = BeautifulSoup(html, "lxml")
 
     # Le bon tableau est celui dont les entetes commencent par "Symbole".
     table_actions = None

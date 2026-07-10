@@ -492,6 +492,84 @@ body {
   background: #fee2e2;
 }
 
+/* Score /100 a cote du symbole */
+.score-pill {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: var(--bleu);
+  font-size: 11px;
+  font-weight: 700;
+  vertical-align: middle;
+  cursor: help;
+}
+
+/* Barre de filtres compacte (dropdowns au survol) */
+.filtres-barre {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.dropdown {
+  position: relative;
+}
+.dropdown-btn {
+  padding: 8px 16px;
+  border: 1px solid var(--bordure);
+  border-radius: 999px;
+  background: white;
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.dropdown:hover .dropdown-btn {
+  border-color: var(--bleu);
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.15);
+}
+.dropdown-btn.filtre-on {
+  background: var(--bleu);
+  border-color: var(--bleu);
+  color: white;
+}
+.dropdown-panel {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 30;
+  min-width: 340px;
+  flex-wrap: wrap;
+  gap: 8px;
+  background: white;
+  border: 1px solid var(--bordure);
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
+}
+/* Le panneau colle au bouton (pas d'espace mort) : le survol reste continu */
+.dropdown:hover .dropdown-panel {
+  display: flex;
+}
+.filtre-reset {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 999px;
+  background: #fef2f2;
+  color: #b91c1c;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.filtre-reset:hover {
+  background: #fee2e2;
+}
+
 /* Filtres par pays */
 .filtres-pays {
   display: flex;

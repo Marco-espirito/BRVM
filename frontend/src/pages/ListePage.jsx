@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { getActions, refresh, formatFCFA } from "../api.js";
+import { getActions, getTopActions, refresh, formatFCFA } from "../api.js";
 
 // Watchlist : simple liste de symboles stockee dans le navigateur.
 function lireWatchlist() {
@@ -20,6 +20,17 @@ const DRAPEAUX = {
   "Mali": "🇲🇱",
   "Niger": "🇳🇪",
   "Togo": "🇹🇬",
+};
+
+// Emoji par secteur officiel BRVM.
+const EMOJI_SECTEUR = {
+  "Services financiers": "🏦",
+  "Télécommunications": "📡",
+  "Énergie": "⛽",
+  "Consommation de base": "🛒",
+  "Consommation discrétionnaire": "🛍️",
+  "Industriels": "🏭",
+  "Services publics": "💡",
 };
 
 // Pastille de liquidite : a quel point l'action s'echange facilement.
@@ -56,12 +67,24 @@ export default function ListePage() {
   const [watchlist, setWatchlist] = useState(lireWatchlist);
   const [rafraichit, setRafraichit] = useState(false);
   const [paysActif, setPaysActif] = useState(null); // null = tous
+  const [secteurActif, setSecteurActif] = useState(null); // null = tous
 
   async function charger() {
     setChargement(true);
     setErreur(null);
     try {
-      setActions(await getActions());
+      // Le score /100 (rendement + liquidite + historique du dividende)
+      // vient de /top-actions : on le greffe sur chaque action.
+      const [liste, scores] = await Promise.all([
+        getActions(),
+        getTopActions(47).catch(() => []),
+      ]);
+      const scoreParSymbole = Object.fromEntries(
+        scores.map((s) => [s.symbole, s.score])
+      );
+      setActions(
+        liste.map((a) => ({ ...a, score: scoreParSymbole[a.symbole] ?? null }))
+      );
     } catch (e) {
       setErreur(e.message);
     } finally {
@@ -95,12 +118,50 @@ export default function ListePage() {
     });
   }
 
-  // Liste des pays presents, avec le nombre d'actions par pays
+  // Les deux filtres se repondent : le panneau Pays compte dans le perimetre
+  // du secteur choisi, et le panneau Secteurs dans celui du pays choisi.
   const paysDisponibles = useMemo(() => {
     const compte = {};
-    for (const a of actions) compte[a.pays] = (compte[a.pays] ?? 0) + 1;
+    for (const a of actions)
+      if (secteurActif === null || a.secteur === secteurActif)
+        compte[a.pays] = (compte[a.pays] ?? 0) + 1;
     return Object.entries(compte).sort((x, y) => y[1] - x[1]);
-  }, [actions]);
+  }, [actions, secteurActif]);
+
+  const secteursDisponibles = useMemo(() => {
+    const compte = {};
+    for (const a of actions)
+      if (a.secteur && (paysActif === null || a.pays === paysActif))
+        compte[a.secteur] = (compte[a.secteur] ?? 0) + 1;
+    return Object.entries(compte).sort((x, y) => y[1] - x[1]);
+  }, [actions, paysActif]);
+
+  // Choisir un pays : si le secteur en cours n'existe pas dans ce pays,
+  // on le retire (sinon la liste afficherait 0 action). Et inversement.
+  function choisirPays(pays) {
+    const nouveau = paysActif === pays ? null : pays;
+    setPaysActif(nouveau);
+    if (
+      nouveau &&
+      secteurActif &&
+      !actions.some((a) => a.pays === nouveau && a.secteur === secteurActif)
+    )
+      setSecteurActif(null);
+    // Filtrer = chercher les meilleures : on trie par score decroissant.
+    if (nouveau) setTri({ champ: "score", sens: -1 });
+  }
+
+  function choisirSecteur(secteur) {
+    const nouveau = secteurActif === secteur ? null : secteur;
+    setSecteurActif(nouveau);
+    if (
+      nouveau &&
+      paysActif &&
+      !actions.some((a) => a.secteur === nouveau && a.pays === paysActif)
+    )
+      setPaysActif(null);
+    if (nouveau) setTri({ champ: "score", sens: -1 });
+  }
 
   // Filtrage + tri, favoris toujours en tete
   const affichees = useMemo(() => {
@@ -109,7 +170,8 @@ export default function ListePage() {
       (a) =>
         (a.symbole.toLowerCase().includes(q) ||
           a.nom.toLowerCase().includes(q)) &&
-        (paysActif === null || a.pays === paysActif)
+        (paysActif === null || a.pays === paysActif) &&
+        (secteurActif === null || a.secteur === secteurActif)
     );
     liste = [...liste].sort((a, b) => {
       const favA = watchlist.includes(a.symbole) ? 0 : 1;
@@ -121,7 +183,7 @@ export default function ListePage() {
       return (va - vb) * tri.sens;
     });
     return liste;
-  }, [actions, recherche, tri, watchlist, paysActif]);
+  }, [actions, recherche, tri, watchlist, paysActif, secteurActif]);
 
   function trierPar(champ) {
     setTri((t) =>
@@ -152,22 +214,76 @@ export default function ListePage() {
         </button>
       </div>
 
-      <div className="filtres-pays">
-        <button
-          className={"filtre-pays " + (paysActif === null ? "actif" : "")}
-          onClick={() => setPaysActif(null)}
-        >
-          🌍 Tous ({actions.length})
-        </button>
-        {paysDisponibles.map(([pays, nb]) => (
-          <button
-            key={pays}
-            className={"filtre-pays " + (paysActif === pays ? "actif" : "")}
-            onClick={() => setPaysActif(paysActif === pays ? null : pays)}
-          >
-            {DRAPEAUX[pays] ?? "🏳️"} {pays} ({nb})
+      <div className="filtres-barre">
+        {/* Filtre pays : bouton compact, panneau au survol */}
+        <div className="dropdown">
+          <button className={"dropdown-btn " + (paysActif ? "filtre-on" : "")}>
+            {paysActif
+              ? `${DRAPEAUX[paysActif] ?? ""} ${paysActif}`
+              : "🌍 Pays"}{" "}
+            ▾
           </button>
-        ))}
+          <div className="dropdown-panel">
+            <button
+              className={"filtre-pays " + (paysActif === null ? "actif" : "")}
+              onClick={() => setPaysActif(null)}
+            >
+              🌍 Tous ({paysDisponibles.reduce((s, [, nb]) => s + nb, 0)})
+            </button>
+            {paysDisponibles.map(([pays, nb]) => (
+              <button
+                key={pays}
+                className={"filtre-pays " + (paysActif === pays ? "actif" : "")}
+                onClick={() => choisirPays(pays)}
+              >
+                {DRAPEAUX[pays] ?? "🏳️"} {pays} ({nb})
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Filtre secteurs : idem */}
+        {secteursDisponibles.length > 0 && (
+          <div className="dropdown">
+            <button className={"dropdown-btn " + (secteurActif ? "filtre-on" : "")}>
+              {secteurActif
+                ? `${EMOJI_SECTEUR[secteurActif] ?? ""} ${secteurActif}`
+                : "🏢 Secteurs"}{" "}
+              ▾
+            </button>
+            <div className="dropdown-panel">
+              <button
+                className={"filtre-pays " + (secteurActif === null ? "actif" : "")}
+                onClick={() => setSecteurActif(null)}
+              >
+                🏢 Tous les secteurs
+                {paysActif ? ` ${DRAPEAUX[paysActif] ?? ""}` : ""}
+              </button>
+              {secteursDisponibles.map(([secteur, nb]) => (
+                <button
+                  key={secteur}
+                  className={"filtre-pays " + (secteurActif === secteur ? "actif" : "")}
+                  onClick={() => choisirSecteur(secteur)}
+                >
+                  {EMOJI_SECTEUR[secteur] ?? "🏢"} {secteur} ({nb})
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Rappel des filtres actifs + reset */}
+        {(paysActif || secteurActif) && (
+          <button
+            className="filtre-reset"
+            onClick={() => {
+              setPaysActif(null);
+              setSecteurActif(null);
+            }}
+          >
+            ✕ Réinitialiser
+          </button>
+        )}
       </div>
 
       <table className="tableau">
@@ -211,6 +327,14 @@ export default function ListePage() {
                   <Link to={`/action/${a.symbole}`} className="symbole">
                     {a.symbole}
                   </Link>
+                  {a.score != null && (
+                    <span
+                      className="score-pill"
+                      title={`Score ${a.score}/100 : rendement (40) + liquidité (30) + historique du dividende (30). Détail sur l'onglet Portefeuille.`}
+                    >
+                      {Math.round(a.score)}
+                    </span>
+                  )}
                 </td>
                 <td className="nom">
                   <span title={a.pays}>{DRAPEAUX[a.pays] ?? ""}</span> {a.nom}
@@ -263,6 +387,9 @@ export default function ListePage() {
       </table>
       <p className="compteur">
         {affichees.length} actions affichées
+        {tri.champ === "score" &&
+          tri.sens === -1 &&
+          " · triées de la meilleure à la moins bonne (score /100 à côté du symbole)"}
         {watchlist.length > 0 && ` · ${watchlist.length} en watchlist ⭐`}
         {" · "}survole les ⓘ pour comprendre chaque colonne
       </p>

@@ -25,9 +25,9 @@ export function formatFCFA(n) {
   return new Intl.NumberFormat("fr-FR").format(n) + " FCFA";
 }
 
-export async function getTopActions() {
-  const r = await fetch(`${BASE}/top-actions`);
-  if (!r.ok) throw new Error("Erreur chargement du top 10");
+export async function getTopActions(limit = 10) {
+  const r = await fetch(`${BASE}/top-actions?limit=${limit}`);
+  if (!r.ok) throw new Error("Erreur chargement du top");
   return r.json();
 }
 

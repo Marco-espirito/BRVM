@@ -35,14 +35,19 @@ def _symbole_depuis_ligne(tr) -> str | None:
 
 
 def fetch_dividendes() -> tuple[list[dict], list[dict]]:
-    """Retourne (historique, prochains).
+    """Telecharge la page Sika Finance et retourne les dividendes parses."""
+    reponse = requests.get(URL, headers=HEADERS, timeout=30)
+    reponse.raise_for_status()
+    return parse_dividendes(reponse.text)
+
+
+def parse_dividendes(html: str) -> tuple[list[dict], list[dict]]:
+    """Parse le HTML de la page dividendes. Retourne (historique, prochains).
 
     historique : [{symbole, annee, montant, rendement}]  (un par annee connue)
     prochains  : [{symbole, date_detachement, montant, rendement}]
     """
-    reponse = requests.get(URL, headers=HEADERS, timeout=30)
-    reponse.raise_for_status()
-    soup = BeautifulSoup(reponse.text, "lxml")
+    soup = BeautifulSoup(html, "lxml")
 
     # --- 1) Historique par annee (tblDiv2) -------------------------------
     historique: list[dict] = []

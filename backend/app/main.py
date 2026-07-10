@@ -209,7 +209,7 @@ def _tendance_dividendes(serie: list[Dividende]) -> str | None:
 
 
 @app.get("/top-actions", response_model=list[TopActionOut])
-def top_actions(db: Session = Depends(get_db)):
+def top_actions(limit: int = 10, db: Session = Depends(get_db)):
     """Top 10 pedagogique pour un debutant 'rendement long terme'.
 
     Score sur 100, volontairement simple et transparent :
@@ -296,17 +296,18 @@ def top_actions(db: Session = Depends(get_db)):
             r.meilleur_du_secteur = True
             secteurs_pris.add(r.secteur)
             top.append(r)
-    # ... puis les meilleurs scores restants pour completer a 10.
+    # ... puis les meilleurs scores restants pour completer.
+    limit = max(1, min(limit, len(resultats)))
     for r in resultats:
-        if len(top) >= 10:
+        if len(top) >= limit:
             break
         if r not in top:
             top.append(r)
 
     top.sort(key=lambda r: -r.score)
-    for i, r in enumerate(top[:10], start=1):
+    for i, r in enumerate(top[:limit], start=1):
         r.rang = i
-    return top[:10]
+    return top[:limit]
 
 
 # --------------------------------------------------------------------------
