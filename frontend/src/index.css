@@ -1,0 +1,273 @@
+:root {
+  --bleu: #2563eb;
+  --vert: #16a34a;
+  --rouge: #dc2626;
+  --gris: #6b7280;
+  --bordure: #e5e7eb;
+  --fond: #f8fafc;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--fond);
+  color: #111827;
+}
+
+.app {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* En-tete */
+.header {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding: 24px 0 12px;
+  border-bottom: 2px solid var(--bordure);
+  flex-wrap: wrap;
+}
+.logo {
+  font-size: 24px;
+  font-weight: 700;
+  text-decoration: none;
+  color: #111827;
+}
+.sous-titre {
+  color: var(--gris);
+  font-size: 14px;
+}
+.contenu {
+  padding: 24px 0;
+  min-height: 60vh;
+}
+.footer {
+  padding: 20px 0;
+  border-top: 1px solid var(--bordure);
+  color: var(--gris);
+  font-size: 13px;
+  text-align: center;
+}
+
+/* Barre d'outils */
+.barre-outils {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.recherche {
+  flex: 1;
+  min-width: 220px;
+  padding: 10px 14px;
+  border: 1px solid var(--bordure);
+  border-radius: 8px;
+  font-size: 14px;
+}
+.btn {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  background: var(--bleu);
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+.btn:hover {
+  opacity: 0.9;
+}
+
+/* Tableau */
+.tableau {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+.tableau th {
+  text-align: left;
+  padding: 12px 14px;
+  background: #f1f5f9;
+  font-size: 13px;
+  color: var(--gris);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+.tableau th:hover {
+  color: #111827;
+}
+.tableau td {
+  padding: 11px 14px;
+  border-top: 1px solid var(--bordure);
+  font-size: 14px;
+}
+.tableau tbody tr:hover {
+  background: #f8fafc;
+}
+.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.nom {
+  color: var(--gris);
+  font-size: 13px;
+}
+.symbole {
+  font-weight: 700;
+  color: var(--bleu);
+  text-decoration: none;
+}
+.symbole:hover {
+  text-decoration: underline;
+}
+.hausse {
+  color: var(--vert);
+  font-weight: 600;
+}
+.baisse {
+  color: var(--rouge);
+  font-weight: 600;
+}
+.compteur {
+  color: var(--gris);
+  font-size: 13px;
+  margin-top: 10px;
+}
+
+/* Etats */
+.info {
+  color: var(--gris);
+  padding: 20px 0;
+}
+.erreur {
+  color: var(--rouge);
+}
+
+/* Page detail */
+.detail h1 {
+  font-size: 22px;
+  margin: 12px 0 4px;
+}
+.symbole-detail {
+  color: var(--gris);
+  font-weight: 400;
+}
+.retour {
+  color: var(--bleu);
+  text-decoration: none;
+  font-size: 14px;
+}
+.cartes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin: 20px 0;
+}
+.carte {
+  background: white;
+  border: 1px solid var(--bordure);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+.carte-titre {
+  color: var(--gris);
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+.carte-valeur {
+  font-size: 18px;
+  font-weight: 700;
+}
+.graphique {
+  background: white;
+  border: 1px solid var(--bordure);
+  border-radius: 10px;
+  padding: 16px 8px;
+}
+
+/* Watchlist */
+.col-etoile {
+  width: 36px;
+  text-align: center;
+}
+.etoile {
+  border: none;
+  background: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: #cbd5e1;
+  padding: 0;
+  line-height: 1;
+}
+.etoile.active {
+  color: #f59e0b;
+}
+.etoile:hover {
+  color: #f59e0b;
+}
+.ligne-favori {
+  background: #fffbeb;
+}
+.tableau tbody tr.ligne-favori:hover {
+  background: #fef3c7;
+}
+
+/* Filtres par pays */
+.filtres-pays {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.filtre-pays {
+  padding: 6px 12px;
+  border: 1px solid var(--bordure);
+  border-radius: 999px;
+  background: white;
+  font-size: 13px;
+  cursor: pointer;
+  color: #374151;
+}
+.filtre-pays:hover {
+  border-color: var(--bleu);
+}
+.filtre-pays.actif {
+  background: var(--bleu);
+  border-color: var(--bleu);
+  color: white;
+  font-weight: 600;
+}
+
+/* Dividendes */
+.rendement {
+  font-weight: 600;
+}
+.encart-detachement {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin: 16px 0;
+  font-size: 14px;
+}
+.explication {
+  color: var(--gris);
+  font-size: 13px;
+  margin-top: 8px;
+}
+.tableau-dividendes {
+  max-width: 520px;
+}
+.btn:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
