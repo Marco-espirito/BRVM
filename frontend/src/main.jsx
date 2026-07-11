@@ -2,6 +2,7 @@ import React, { lazy, Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import App from "./App.jsx";
+import Background3D from "./components/Background3D.jsx";
 const ListePage = lazy(() => import("./pages/ListePage.jsx"));
 const DetailPage = lazy(() => import("./pages/DetailPage.jsx"));
 const SimulateurPage = lazy(() => import("./pages/SimulateurPage.jsx"));
@@ -19,6 +20,7 @@ import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
+    <Background3D />
     <BrowserRouter>
       <Suspense fallback={<p className="info">Chargement de la page…</p>}><Routes>
         <Route path="/" element={<App />}>

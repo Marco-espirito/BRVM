@@ -65,7 +65,10 @@ export default function App() {
         {statutDonnees && <StatutDonnees statut={statutDonnees} />}
       </header>
       <main className="contenu">
-        <Outlet context={{ utilisateur, setUtilisateur }} />
+        {/* La cle relance l'animation d'entree a chaque changement de route. */}
+        <div className="page-anim" key={location.pathname}>
+          <Outlet context={{ utilisateur, setUtilisateur }} />
+        </div>
       </main>
       <footer className="footer">
         Données publiques brvm.org · Projet d'apprentissage, ne constitue pas un
