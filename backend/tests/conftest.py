@@ -8,7 +8,7 @@ from __future__ import annotations
 import os
 import tempfile
 import uuid
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 
 # Base temporaire, propre a chaque session de tests
@@ -23,6 +23,7 @@ from app.main import app
 from app.models import Cotation, Detachement, Dividende, Societe
 
 FIXTURES = Path(__file__).parent / "fixtures"
+DATE_DETACHEMENT_TEST = date.today() + timedelta(days=30)
 
 
 def lire_fixture(nom: str) -> str:
@@ -69,7 +70,8 @@ def base_de_demo():
                 Dividende(symbole="BOAB", annee=2024, montant=468, rendement=14.72),
                 Dividende(symbole="BOAB", annee=2025, montant=585, rendement=15.88),
                 Dividende(symbole="SNTS", annee=2024, montant=1740, rendement=5.5),
-                Detachement(symbole="BOAB", date_detachement="15/08/2026",
+                Detachement(symbole="BOAB",
+                            date_detachement=DATE_DETACHEMENT_TEST.strftime("%d/%m/%Y"),
                             montant=585, rendement=6.6),
             ]
         )
@@ -81,6 +83,13 @@ def base_de_demo():
 
 @pytest.fixture()
 def client():
+    # Certains tests modifient le detachement : chaque cas repart de la fixture.
+    db = SessionLocal()
+    try:
+        db.get(Detachement, "BOAB").date_detachement = DATE_DETACHEMENT_TEST.strftime("%d/%m/%Y")
+        db.commit()
+    finally:
+        db.close()
     client = TestClient(app)
     identifiant = uuid.uuid4().hex
     reponse = client.post("/auth/inscription", json={

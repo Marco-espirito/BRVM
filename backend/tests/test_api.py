@@ -3,6 +3,8 @@ from __future__ import annotations
 
 import pytest
 
+from conftest import DATE_DETACHEMENT_TEST
+
 
 # ------------------------------------------------------------------ /actions
 def test_liste_actions(client):
@@ -37,7 +39,7 @@ def test_detail_action(client):
     assert len(detail["historique"]) == 2  # 2 jours de cotations
     # Dividendes tries du plus recent au plus ancien
     assert [d["annee"] for d in detail["dividendes"]] == [2025, 2024, 2023, 2022]
-    assert detail["prochain_detachement"]["date_detachement"] == "15/08/2026"
+    assert detail["prochain_detachement"]["date_detachement"] == DATE_DETACHEMENT_TEST.strftime("%d/%m/%Y")
     assert detail["performances"]["plus_haut_52s"] == 8800.0
     assert detail["performances"]["plus_bas_52s"] == 8790.0
     assert detail["performances"]["variation_7j"] is None
@@ -59,7 +61,7 @@ def test_calendrier_dividendes_et_rappel(client):
     calendrier = client.get("/dividendes/calendrier")
     assert calendrier.status_code == 200
     evenement = next(e for e in calendrier.json()["evenements"] if e["symbole"] == "BOAB")
-    assert evenement["date_detachement"] == "2026-08-15"
+    assert evenement["date_detachement"] == DATE_DETACHEMENT_TEST.isoformat()
     assert evenement["date_paiement"] is None
     assert evenement["montant"] == 585.0
     rappel = client.post("/alertes", json={
@@ -378,7 +380,7 @@ def test_position_expose_la_source_du_dividende(client):
     assert position["dividende_par_action"] == 585
     assert position["annee_dividende"] == 2025
     assert position["rendement_dividende_pct"] == pytest.approx(6.66)
-    assert position["date_detachement_annoncee"] == "15/08/2026"
+    assert position["date_detachement_annoncee"] == DATE_DETACHEMENT_TEST.strftime("%d/%m/%Y")
     assert position["dividende_donnee_ancienne"] is False
     assert position["dividende_potentiellement_exceptionnel"] is False
 
