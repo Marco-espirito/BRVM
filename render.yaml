@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: brvm-explorer-api
+    runtime: docker
+    plan: free
+    branch: main
+    dockerfilePath: ./Dockerfile.render
+    dockerContext: .
+    healthCheckPath: /
+    autoDeployTrigger: commit
+    envVars:
+      - key: BRVM_DB_PATH
+        value: /var/data/brvm.db
+      - key: BRVM_CORS_ORIGINS
+        value: https://brvm-explorer.vercel.app
+      - key: BRVM_FRONTEND_URL
+        value: https://brvm-explorer.vercel.app
+      - key: COOKIE_SECURE
+        value: "1"
+      - key: BRVM_CLAIM_LEGACY_DATA
+        value: "0"
+      - key: BRVM_ALLOW_USER_REFRESH
+        value: "0"
