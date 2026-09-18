@@ -1,5 +1,5 @@
 // Petit client pour parler a l'API FastAPI du backend.
-const BASE = import.meta.env.VITE_API_URL ?? "http://localhost:8000";
+const BASE = import.meta.env.VITE_API_URL ?? (import.meta.env.DEV ? "http://localhost:8000" : "/api");
 const fetch = (url, options = {}) => window.fetch(url, { ...options, credentials: "include" });
 
 export async function inscription(email, mot_de_passe, nom) {
