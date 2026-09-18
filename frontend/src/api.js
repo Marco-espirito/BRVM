@@ -10,6 +10,14 @@ export async function connexion(email, mot_de_passe) {
   const r = await fetch(`${BASE}/auth/connexion`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email, mot_de_passe }) });
   if (!r.ok) throw new Error((await r.json()).detail ?? "Connexion impossible"); return r.json();
 }
+export async function demanderReinitialisation(email) {
+  const r = await fetch(`${BASE}/auth/mot-de-passe-oublie`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email }) });
+  if (!r.ok) throw new Error((await r.json()).detail ?? "Demande impossible"); return r.json();
+}
+export async function reinitialiserMotDePasse(jeton, nouveau_mot_de_passe) {
+  const r = await fetch(`${BASE}/auth/reinitialiser-mot-de-passe`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ jeton, nouveau_mot_de_passe }) });
+  if (!r.ok) throw new Error((await r.json()).detail ?? "Réinitialisation impossible"); return r.json();
+}
 export async function getMoi() { const r = await fetch(`${BASE}/auth/moi`); if (!r.ok) return null; return r.json(); }
 export async function deconnexion() { await fetch(`${BASE}/auth/deconnexion`, { method: "POST" }); }
 export async function modifierProfil(nom) { const r = await fetch(`${BASE}/auth/profil`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ nom }) }); if (!r.ok) throw new Error((await r.json()).detail ?? "Modification impossible"); return r.json(); }
@@ -77,6 +85,12 @@ export async function mouvementEspeces(type, montant, portefeuilleId) {
     body: JSON.stringify({ type, montant }),
   });
   if (!r.ok) throw new Error((await r.json()).detail ?? "Mouvement impossible");
+  return r.json();
+}
+
+export async function crediterDividendes(portefeuilleId) {
+  const r = await fetch(`${BASE}/portefeuille/dividendes/crediter?portefeuille_id=${portefeuilleId}`, { method: "POST" });
+  if (!r.ok) throw new Error((await r.json()).detail ?? "Crédit des dividendes impossible");
   return r.json();
 }
 

@@ -139,6 +139,9 @@ class MouvementEspeces(Base):
     type: Mapped[str] = mapped_column(String, nullable=False)  # DEPOT | RETRAIT
     montant: Mapped[float] = mapped_column(Float, nullable=False)
     solde_apres: Mapped[float | None] = mapped_column(Float)
+    symbole: Mapped[str | None] = mapped_column(String, index=True)
+    quantite: Mapped[int | None] = mapped_column(Integer)
+    reference: Mapped[str | None] = mapped_column(String, unique=True, index=True)
     cree_le: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
 
 
@@ -148,6 +151,18 @@ class SessionUtilisateur(Base):
     utilisateur_id: Mapped[int] = mapped_column(Integer, ForeignKey("utilisateurs.id"), index=True)
     jeton_hash: Mapped[str] = mapped_column(String, unique=True, index=True)
     expire_le: Mapped[datetime] = mapped_column(DateTime, nullable=False)
+
+
+class ReinitialisationMotDePasse(Base):
+    """Jeton a usage unique pour choisir un nouveau mot de passe."""
+
+    __tablename__ = "reinitialisations_mot_de_passe"
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    utilisateur_id: Mapped[int] = mapped_column(Integer, ForeignKey("utilisateurs.id"), index=True)
+    jeton_hash: Mapped[str] = mapped_column(String, unique=True, index=True)
+    expire_le: Mapped[datetime] = mapped_column(DateTime, nullable=False)
+    utilise_le: Mapped[datetime | None] = mapped_column(DateTime)
+    cree_le: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
 
 
 class FavoriUtilisateur(Base):

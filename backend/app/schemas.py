@@ -150,6 +150,9 @@ class MouvementEspecesOut(BaseModel):
     type: str
     montant: float
     solde_apres: float | None = None
+    symbole: str | None = None
+    quantite: int | None = None
+    reference: str | None = None
     cree_le: datetime
 
     model_config = ConfigDict(from_attributes=True)
@@ -185,6 +188,7 @@ class PortefeuilleOut(BaseModel):
     concentration_max_pct: float | None = None
     indice_concentration: float | None = None
     dividendes_recus: float = 0
+    dividendes_creditables: float = 0
     performance_totale: float = 0
     performance_totale_pct: float | None = None
     rendement_annualise: float | None = None
@@ -350,6 +354,15 @@ class ProfilIn(BaseModel):
 
 class ChangementMotDePasseIn(BaseModel):
     mot_de_passe_actuel: str
+    nouveau_mot_de_passe: str
+
+
+class DemandeReinitialisationIn(BaseModel):
+    email: str
+
+
+class ReinitialisationMotDePasseIn(BaseModel):
+    jeton: str
     nouveau_mot_de_passe: str
 
 

@@ -44,6 +44,19 @@ def creer_tables() -> None:
         if colonnes_mouvements and "solde_apres" not in colonnes_mouvements:
             conn.execute(text("ALTER TABLE mouvements_especes ADD COLUMN solde_apres FLOAT"))
             conn.commit()
+        for colonne, definition in (
+            ("symbole", "VARCHAR"),
+            ("quantite", "INTEGER"),
+            ("reference", "VARCHAR"),
+        ):
+            if colonnes_mouvements and colonne not in colonnes_mouvements:
+                conn.execute(text(f"ALTER TABLE mouvements_especes ADD COLUMN {colonne} {definition}"))
+                conn.commit()
+        conn.execute(text(
+            "CREATE UNIQUE INDEX IF NOT EXISTS ix_mouvements_especes_reference "
+            "ON mouvements_especes(reference) WHERE reference IS NOT NULL"
+        ))
+        conn.commit()
     db = SessionLocal()
     try:
         if db.query(Transaction).count() == 0:

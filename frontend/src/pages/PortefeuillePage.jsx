@@ -21,6 +21,7 @@ import {
   acheterPosition,
   vendrePartiellement,
   mouvementEspeces,
+  crediterDividendes,
   exportTransactionsCsv,
   getMesPortefeuilles,
   creerPortefeuille,
@@ -60,6 +61,7 @@ export default function PortefeuillePage() {
   const [operationFrais, setOperationFrais] = useState(1);
   const [operationFiscalite, setOperationFiscalite] = useState(0);
   const [gestionPortefeuille, setGestionPortefeuille] = useState(null);
+  const [messageDividendes, setMessageDividendes] = useState("");
 
   async function charger(forcerId = null) {
     try {
@@ -146,6 +148,32 @@ export default function PortefeuillePage() {
     }
   }
 
+  async function encaisserDividendes() {
+    setEnCours(true); setErreur(null); setMessageDividendes("");
+    try {
+      const resultat = await crediterDividendes(portefeuilleActif);
+      setMessageDividendes(resultat.total_credite > 0
+        ? `${formatFCFA(resultat.total_credite)} crédités dans tes liquidités.`
+        : resultat.message);
+      await charger(portefeuilleActif);
+    } catch (e) { setErreur(e.message); }
+    finally { setEnCours(false); }
+  }
+
+  function preparerReinvestissement() {
+    const solde = portefeuille?.solde_especes ?? 0;
+    const choisie = actions.find((a) => a.symbole === symbole && a.cours_cloture > 0);
+    const abordables = actions.filter((a) => a.cours_cloture > 0 && a.cours_cloture * (1 + fraisAchat / 100) <= solde);
+    const cible = choisie && choisie.cours_cloture * (1 + fraisAchat / 100) <= solde
+      ? choisie
+      : abordables.sort((a, b) => a.cours_cloture - b.cours_cloture)[0];
+    if (!cible) { setErreur("Tes liquidités ne permettent pas encore d’acheter une action avec les frais saisis."); return; }
+    setSymbole(cible.symbole);
+    setQuantite(Math.max(1, Math.floor(solde / (cible.cours_cloture * (1 + fraisAchat / 100)))));
+    setMessageDividendes("Quantité maximale préparée avec les liquidités disponibles. Vérifie puis confirme l’achat.");
+    document.getElementById("achat-portefeuille")?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+
   if (erreur && !portefeuille)
     return (
       <div className="info erreur">
@@ -186,7 +214,11 @@ export default function PortefeuillePage() {
         </div>
         <button className="btn" onClick={() => ouvrirOperation("DEPOT")}>+ Déposer</button>
         <button className="btn-secondaire" onClick={() => ouvrirOperation("RETRAIT")}>Retirer</button>
+        <button className="btn-dividende" disabled={enCours || portefeuille.dividendes_creditables <= 0} onClick={encaisserDividendes}>💰 Encaisser {portefeuille.dividendes_creditables > 0 ? formatFCFA(portefeuille.dividendes_creditables) : "les dividendes"}</button>
+        <button className="btn-secondaire" disabled={enCours || portefeuille.solde_especes <= 0} onClick={preparerReinvestissement}>↻ Réinvestir mes liquidités</button>
       </div>
+      {messageDividendes && <p className="info succes-dividendes">{messageDividendes}</p>}
+      <p className="explication dividendes-regle">Les dividendes sont crédités fictivement après leur détachement, faute de date de paiement publiée par la source. Seules les actions détenues avant le détachement sont éligibles, et chaque versement ne peut être crédité qu’une fois.</p>
 
       {/* Top 10 pedagogique */}
       {top.length > 0 && (
@@ -252,7 +284,7 @@ export default function PortefeuillePage() {
       )}
 
       {/* Formulaire d'achat */}
-      <form className="simulateur-form" onSubmit={acheter}>
+      <form id="achat-portefeuille" className="simulateur-form" onSubmit={acheter}>
         <label className="champ">
           <span>Action</span>
           <select value={symbole} onChange={(e) => setSymbole(e.target.value)}>
@@ -592,8 +624,8 @@ export default function PortefeuillePage() {
               <thead><tr><th>Date</th><th>Type</th><th className="num">Montant</th><th className="num">Solde après mouvement</th></tr></thead>
               <tbody>{mouvementsAvecSolde.map((m) => <tr key={m.id}>
                 <td>{new Date(`${m.cree_le}Z`).toLocaleString("fr-FR", { dateStyle: "medium", timeStyle: "short" })}</td>
-                <td><span className={`transaction-badge ${m.type === "DEPOT" ? "achat" : "vente"}`}>{m.type === "DEPOT" ? "Dépôt" : "Retrait"}</span></td>
-                <td className={`num ${m.type === "DEPOT" ? "hausse" : "baisse"}`}>{m.type === "DEPOT" ? "+" : "−"}{formatFCFA(m.montant)}</td>
+                <td><span className={`transaction-badge ${m.type === "RETRAIT" ? "vente" : "achat"}`}>{m.type === "DEPOT" ? "Dépôt" : m.type === "DIVIDENDE" ? `Dividende ${m.symbole ?? ""}` : "Retrait"}</span></td>
+                <td className={`num ${m.type === "RETRAIT" ? "baisse" : "hausse"}`}>{m.type === "RETRAIT" ? "−" : "+"}{formatFCFA(m.montant)}{m.type === "DIVIDENDE" && m.quantite ? ` (${m.quantite} actions)` : ""}</td>
                 <td className="num">{m.solde_apres == null ? "Historique antérieur" : formatFCFA(m.solde_apres)}</td>
               </tr>)}</tbody>
             </table>

@@ -174,6 +174,37 @@ def test_modifier_profil_et_mot_de_passe(client):
     }).status_code == 200
 
 
+def test_reinitialisation_mot_de_passe_usage_unique(client, monkeypatch):
+    from urllib.parse import parse_qs, urlparse
+
+    email = client.get("/auth/moi").json()["email"]
+    client.post("/auth/deconnexion")
+    monkeypatch.setenv("BRVM_ALLOW_DEV_RESET_LINK", "1")
+    demande = client.post("/auth/mot-de-passe-oublie", json={"email": email})
+    assert demande.status_code == 200
+    lien = demande.json()["lien_developpement"]
+    jeton = parse_qs(urlparse(lien).query)["reset_token"][0]
+    nouveau = "mot-de-passe-reinitialise-solide"
+    changement = client.post("/auth/reinitialiser-mot-de-passe", json={
+        "jeton": jeton, "nouveau_mot_de_passe": nouveau,
+    })
+    assert changement.status_code == 200
+    assert client.post("/auth/reinitialiser-mot-de-passe", json={
+        "jeton": jeton, "nouveau_mot_de_passe": "encore-un-autre-mot-de-passe",
+    }).status_code == 400
+    assert client.post("/auth/connexion", json={
+        "email": email, "mot_de_passe": nouveau,
+    }).status_code == 200
+
+
+def test_mot_de_passe_oublie_ne_revele_pas_les_comptes(client):
+    reponse = client.post("/auth/mot-de-passe-oublie", json={
+        "email": "compte-absent@example.com",
+    })
+    assert reponse.status_code == 200
+    assert "lien_developpement" not in reponse.json()
+
+
 def test_refresh_reserve_administrateur(client):
     assert client.post("/refresh").status_code == 403
 
@@ -300,6 +331,33 @@ def test_achat_debite_et_vente_credite_les_liquidites(client):
     assert client.get("/portefeuille").json()["solde_especes"] == pytest.approx(
         avant - cout + produit_net
     )
+
+
+def test_credit_dividende_est_idempotent_et_augmente_les_liquidites(client):
+    from app.db import SessionLocal
+    from app.models import Detachement
+
+    assert client.post("/portefeuille/positions", json={
+        "symbole": "BOAB", "quantite": 3, "frais_courtage_pct": 0,
+    }).status_code == 200
+    db = SessionLocal()
+    try:
+        detachement = db.get(Detachement, "BOAB")
+        detachement.date_detachement = "11/07/2026"
+        db.commit()
+    finally:
+        db.close()
+    avant = client.get("/portefeuille").json()
+    assert avant["dividendes_creditables"] == pytest.approx(3 * 585)
+    premier = client.post("/portefeuille/dividendes/crediter")
+    assert premier.status_code == 200
+    assert premier.json()["total_credite"] == pytest.approx(3 * 585)
+    apres = client.get("/portefeuille").json()
+    assert apres["solde_especes"] == pytest.approx(avant["solde_especes"] + 3 * 585)
+    assert apres["dividendes_recus"] == pytest.approx(3 * 585)
+    assert apres["dividendes_creditables"] == 0
+    second = client.post("/portefeuille/dividendes/crediter")
+    assert second.json()["total_credite"] == 0
 
 
 def test_achat_refuse_si_liquidites_insuffisantes(client):

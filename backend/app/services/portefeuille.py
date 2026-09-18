@@ -2,7 +2,7 @@
 dividendes recus, repartition et performance temporelle. Aucune route ici."""
 from __future__ import annotations
 
-from datetime import date
+from datetime import date, datetime
 
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
@@ -98,18 +98,52 @@ def positions_out(db: Session, portefeuille_id: int) -> list[PositionOut]:
 
 
 def dividendes_recus_position(db: Session, portefeuille_id: int, symbole: str) -> float:
-    transactions = db.query(Transaction).filter_by(
-        portefeuille_id=portefeuille_id, symbole=symbole
+    return sum(m.montant for m in db.query(MouvementEspeces).filter_by(
+        portefeuille_id=portefeuille_id, type="DIVIDENDE", symbole=symbole
+    ).all())
+
+
+def quantite_avant_detachement(db: Session, portefeuille_id: int,
+                               symbole: str, jour_detachement: date) -> int:
+    """Quantité ouvrant droit au dividende : détenue avant le détachement."""
+    transactions = db.query(Transaction).filter(
+        Transaction.portefeuille_id == portefeuille_id,
+        Transaction.symbole == symbole,
+        Transaction.jour < jour_detachement,
     ).order_by(Transaction.jour, Transaction.id).all()
-    total = 0.0
-    for dividende in db.query(Dividende).filter(
-        Dividende.symbole == symbole, Dividende.montant.isnot(None)
-    ).all():
-        fin_exercice = date(dividende.annee, 12, 31)
-        quantite = sum((t.quantite if t.type == "ACHAT" else -t.quantite)
-                       for t in transactions if t.jour <= fin_exercice)
-        total += max(quantite, 0) * dividende.montant
-    return total
+    return max(sum(t.quantite if t.type == "ACHAT" else -t.quantite
+                   for t in transactions), 0)
+
+
+def dividendes_eligibles(db: Session, portefeuille_id: int) -> list[dict]:
+    """Versements simulés connus, détachés et pas encore crédités."""
+    resultat = []
+    for detachement in db.query(Detachement).all():
+        if not detachement.montant or detachement.montant <= 0:
+            continue
+        try:
+            jour = datetime.strptime(detachement.date_detachement, "%d/%m/%Y").date()
+        except (TypeError, ValueError):
+            continue
+        if jour > date.today():
+            continue
+        reference = f"DIVIDENDE:{portefeuille_id}:{detachement.symbole}:{jour.isoformat()}"
+        existe = db.query(MouvementEspeces).filter_by(reference=reference).first()
+        if existe:
+            continue
+        quantite = quantite_avant_detachement(
+            db, portefeuille_id, detachement.symbole, jour
+        )
+        if quantite:
+            resultat.append({
+                "symbole": detachement.symbole,
+                "quantite": quantite,
+                "montant_par_action": detachement.montant,
+                "montant": quantite * detachement.montant,
+                "jour_detachement": jour,
+                "reference": reference,
+            })
+    return resultat
 
 
 def transaction_position_out(db: Session, symbole: str, etat: dict, portefeuille_id: int) -> PositionOut:

@@ -35,6 +35,7 @@ from ..services.portefeuille import (
     comparaison_portefeuille,
     dernier_cours,
     dividendes_recus_position,
+    dividendes_eligibles,
     enregistrer_vente,
     performance_temporelle,
     positions_out,
@@ -43,6 +44,36 @@ from ..services.portefeuille import (
 )
 
 router = APIRouter(tags=["trading"])
+
+
+@router.post("/portefeuille/dividendes/crediter")
+def crediter_dividendes(portefeuille_id: int | None = None,
+                        utilisateur: Utilisateur = Depends(utilisateur_courant),
+                        db: Session = Depends(get_db)):
+    """Crédite une seule fois les dividendes dont le détachement est passé."""
+    portefeuille_actif = selection_portefeuille(db, utilisateur, portefeuille_id)
+    credits = []
+    for ligne in dividendes_eligibles(db, portefeuille_actif.id):
+        portefeuille_actif.solde_especes += ligne["montant"]
+        mouvement = MouvementEspeces(
+            portefeuille_id=portefeuille_actif.id,
+            type="DIVIDENDE",
+            montant=ligne["montant"],
+            solde_apres=portefeuille_actif.solde_especes,
+            symbole=ligne["symbole"],
+            quantite=ligne["quantite"],
+            reference=ligne["reference"],
+        )
+        db.add(mouvement)
+        credits.append({k: v for k, v in ligne.items() if k != "reference"})
+    db.commit()
+    return {
+        "credits": credits,
+        "total_credite": sum(ligne["montant"] for ligne in credits),
+        "solde_especes": portefeuille_actif.solde_especes,
+        "message": "Aucun nouveau dividende éligible." if not credits else
+                   f"{len(credits)} dividende(s) crédité(s).",
+    }
 
 
 @router.post("/portefeuille/especes")
@@ -138,6 +169,9 @@ def portefeuille(portefeuille_id: int | None = None,
     dividendes_annuels = sum(s.dividende_annuel or 0 for s in sorties)
     dividendes_recus = sum(dividendes_recus_position(db, portefeuille_actif.id, symbole)
                            for symbole in {t.symbole for t in transactions})
+    dividendes_creditables = sum(
+        ligne["montant"] for ligne in dividendes_eligibles(db, portefeuille_actif.id)
+    )
 
     # Valeur du portefeuille jour par jour : pour chaque jour de cotation
     # depuis le premier achat, somme (quantite x dernier cours connu) des
@@ -201,6 +235,7 @@ def portefeuille(portefeuille_id: int | None = None,
         concentration_max_pct=round(max(poids) * 100, 2) if poids else None,
         indice_concentration=round(sum(p * p for p in poids) * 10000, 0) if poids else None,
         dividendes_recus=dividendes_recus,
+        dividendes_creditables=dividendes_creditables,
         performance_totale=performance_totale,
         performance_totale_pct=performance_totale_pct,
         rendement_annualise=round(rendement_annualise, 2) if rendement_annualise is not None else None,
@@ -241,7 +276,7 @@ def exporter_transactions_csv(portefeuille_id: int | None = None,
     for m in mouvements:
         flux = m.montant if m.type == "DEPOT" else -m.montant
         lignes.append((m.cree_le, [m.cree_le.isoformat(sep=" ", timespec="seconds"), "Trésorerie",
-                       m.type, "", "", "", "", "", nombre(m.montant), "",
+                       m.type, m.symbole or "", m.quantite or "", "", "", "", nombre(m.montant), "",
                        nombre(flux), nombre(m.solde_apres)]))
     for _, ligne in sorted(lignes, key=lambda element: element[0]):
         writer.writerow(ligne)

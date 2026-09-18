@@ -468,6 +468,28 @@ body {
 .analyse-hub-carte h2 { margin: 18px 0 8px; font-size: 1.2rem; }
 .analyse-hub-carte p { margin: 0 0 22px; color: #64748b; line-height: 1.55; }
 .analyse-hub-carte .btn { margin-top: auto; }
+.carte-revenus-interactive { width: 100%; border: 1px solid #bfdbfe; text-align: left; font: inherit; cursor: pointer; transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease; }
+.carte-revenus-interactive:hover { transform: translateY(-2px); border-color: #2563eb; box-shadow: 0 12px 28px rgb(37 99 235 / 13%); }
+.carte-revenus-interactive:focus-visible { outline: 3px solid rgb(37 99 235 / 28%); outline-offset: 3px; }
+.carte-revenus-interactive.ouverte { border-color: #2563eb; background: #f8fbff; }
+.carte-entete-interactive { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.carte-entete-interactive > span { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: #eff6ff; color: #2563eb; font-size: 1.2rem; font-weight: 700; }
+.carte-indication { margin-top: 12px; color: #2563eb; font-size: .76rem; font-weight: 700; }
+.detail-revenus-futurs { margin: 18px 0 28px; padding: 24px; border: 1px solid #bfdbfe; border-radius: 16px; background: white; box-shadow: 0 14px 34px rgb(15 23 42 / 7%); animation: detail-revenus-apparition .2s ease-out; }
+.detail-revenus-entete { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
+.detail-revenus-entete h2 { margin: 4px 0 0; }
+.detail-revenus-entete > strong { color: #16a34a; font-size: 1.35rem; white-space: nowrap; }
+.revenus-futurs-liste { display: grid; }
+.revenu-futur-ligne { display: grid; grid-template-columns: minmax(190px, 1.5fr) repeat(4, minmax(120px, 1fr)); align-items: center; gap: 15px; padding: 15px 0; border-top: 1px solid #e2e8f0; }
+.revenu-futur-ligne > div { display: flex; flex-direction: column; gap: 3px; }
+.revenu-futur-ligne span { color: #64748b; font-size: .76rem; }
+.revenu-futur-societe span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.revenu-futur-montant { text-align: right; }
+.revenu-futur-montant strong { color: #16a34a; font-size: 1.02rem; }
+@keyframes detail-revenus-apparition { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+@media (max-width: 900px) { .revenu-futur-ligne { grid-template-columns: 1fr 1fr; } .revenu-futur-societe { grid-column: 1 / -1; } .revenu-futur-montant { text-align: left; } }
+@media (max-width: 560px) { .detail-revenus-futurs { padding: 18px; } .detail-revenus-entete { align-items: start; flex-direction: column; } .revenu-futur-ligne { grid-template-columns: 1fr; } .revenu-futur-societe { grid-column: auto; } }
+@media (prefers-reduced-motion: reduce) { .detail-revenus-futurs { animation: none; } .carte-revenus-interactive { transition: none; } }
 @media (max-width: 800px) { .analyse-hub-grille { grid-template-columns: 1fr; } .analyse-hub-carte { min-height: 0; } }
 @media (max-width: 720px) { .parametres-grille { grid-template-columns: 1fr; } .actions-compte { margin-left: auto; } .btn-deconnexion { display: none; } }
 
@@ -712,6 +734,11 @@ body {
   cursor: wait;
   opacity: 0.55;
 }
+.btn-dividende { border: 1px solid #16a34a; border-radius: 9px; padding: 10px 14px; background: #ecfdf5; color: #15803d; font-weight: 800; cursor: pointer; }
+.btn-dividende:hover:not(:disabled) { background: #dcfce7; }
+.btn-dividende:disabled { border-color: #d1d5db; background: #f8fafc; color: #94a3b8; cursor: not-allowed; }
+.succes-dividendes { border-color: #86efac; background: #f0fdf4; color: #166534; }
+.dividendes-regle { margin-top: -4px; }
 
 .actions-position {
   display: flex;
@@ -1110,5 +1137,12 @@ body {
 .connexion-carte form { display: grid; gap: 14px; }.connexion-carte label { display: grid; gap: 6px; font-size: 13px; font-weight: 600; }
 .connexion-carte input { padding: 10px; border: 1px solid var(--bordure); border-radius: 8px; }.connexion-carte .btn { width: 100%; }
 .lien-auth { display: block; margin: 16px auto 0; border: 0; background: none; color: var(--bleu); cursor: pointer; }.erreur-auth { color: #b91c1c; font-size: 13px; }
+.succes-auth { margin: 0; padding: 10px 12px; border-radius: 8px; background: #ecfdf5; color: #047857; font-size: 13px; }
+.lien-dev-reset { color: var(--bleu); font-size: 13px; font-weight: 700; text-align: center; }
+.champ-mot-de-passe { position: relative; display: block; }
+.champ-mot-de-passe input { width: 100%; padding-right: 48px; }
+.bouton-visibilite { position: absolute; top: 50%; right: 7px; width: 36px; height: 36px; padding: 0; border: 0; border-radius: 8px; background: transparent; cursor: pointer; transform: translateY(-50%); font-size: 18px; line-height: 1; }
+.bouton-visibilite:hover { background: #f1f5f9; }
+.bouton-visibilite:focus-visible { outline: 2px solid var(--bleu); outline-offset: 1px; }
 .btn-compte { border: 0; background: #f1f5f9; color: #475569; border-radius: 999px; padding: 7px 11px; cursor: pointer; white-space: nowrap; }
 .gestion-portefeuilles { display: flex; gap: 10px; margin: 12px 0 18px; }.gestion-portefeuilles select { min-width: 230px; padding: 9px; border: 1px solid var(--bordure); border-radius: 8px; background: white; }

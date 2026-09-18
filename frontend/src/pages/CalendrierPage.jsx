@@ -10,6 +10,7 @@ export default function CalendrierPage() {
   const [symbole, setSymbole] = useState("");
   const [detail, setDetail] = useState(null);
   const [message, setMessage] = useState("");
+  const [afficherRevenus, setAfficherRevenus] = useState(false);
   useEffect(() => { getCalendrierDividendes(Number(localStorage.getItem("portefeuille-actif")) || null).then((c) => {
     setCalendrier(c);
     if (c.prochaine_date) { const d = dateLocale(c.prochaine_date); setCourant(new Date(d.getFullYear(), d.getMonth(), 1)); }
@@ -22,6 +23,9 @@ export default function CalendrierPage() {
     const d = dateLocale(e.date_detachement);
     return d.getFullYear() === courant.getFullYear() && d.getMonth() === courant.getMonth();
   }) ?? [], [calendrier, courant]);
+  const revenusPortefeuille = useMemo(() => calendrier?.evenements
+    .filter((e) => e.quantite_portefeuille > 0 && e.revenu_estime > 0)
+    .sort((a, b) => (a.date_detachement ?? "9999").localeCompare(b.date_detachement ?? "9999")) ?? [], [calendrier]);
 
   if (!calendrier) return <p className="info">Chargement du calendrier…</p>;
   async function rappeler(e) {
@@ -37,10 +41,26 @@ export default function CalendrierPage() {
     <p className="explication">Les dates proviennent des annonces collectées. La date de paiement reste « non communiquée » lorsqu’elle n’est pas publiée par la source.</p>
     {message && <p className="info">{message}</p>}
     <div className="cartes">
-      <div className="carte"><div className="carte-titre">Revenus futurs estimés</div><div className="carte-valeur hausse">{formatFCFA(calendrier.revenu_total_estime)}</div><div className="carte-sous">≈ {formatEUR(enEuros(calendrier.revenu_total_estime))}</div></div>
+      <button className={`carte carte-revenus-interactive ${afficherRevenus ? "ouverte" : ""}`} onClick={() => setAfficherRevenus((visible) => !visible)} aria-expanded={afficherRevenus} aria-controls="detail-revenus-futurs">
+        <div className="carte-entete-interactive"><div className="carte-titre">Revenus futurs estimés</div><span>{afficherRevenus ? "−" : "+"}</span></div>
+        <div className="carte-valeur hausse">{formatFCFA(calendrier.revenu_total_estime)}</div><div className="carte-sous">≈ {formatEUR(enEuros(calendrier.revenu_total_estime))}</div>
+        <div className="carte-indication">{afficherRevenus ? "Masquer le détail" : `Voir les ${revenusPortefeuille.length} entreprise${revenusPortefeuille.length > 1 ? "s" : ""} concernée${revenusPortefeuille.length > 1 ? "s" : ""}`}</div>
+      </button>
       <div className="carte"><div className="carte-titre">Prochain détachement</div><div className="carte-valeur">{calendrier.prochaine_date ? formatDate(calendrier.prochaine_date) : "Aucun annoncé"}</div></div>
       <div className="carte"><div className="carte-titre">Annonces suivies</div><div className="carte-valeur">{calendrier.evenements.length}</div></div>
     </div>
+
+    {afficherRevenus && <section id="detail-revenus-futurs" className="detail-revenus-futurs">
+      <div className="detail-revenus-entete"><div><span className="operation-etiquette">Ton portefeuille</span><h2>Entreprises qui verseront ces dividendes</h2></div><strong>{formatFCFA(calendrier.revenu_total_estime)}</strong></div>
+      {revenusPortefeuille.length === 0 ? <p className="info">Aucune action actuellement détenue ne correspond aux dividendes annoncés.</p> : <div className="revenus-futurs-liste">{revenusPortefeuille.map((e) => <article key={e.symbole} className="revenu-futur-ligne">
+        <div className="revenu-futur-societe"><Link className="symbole" to={`/action/${e.symbole}`}>{e.symbole}</Link><span>{e.nom}</span></div>
+        <div><span>Quantité détenue</span><strong>{e.quantite_portefeuille}</strong></div>
+        <div><span>Dividende/action</span><strong>{formatFCFA(e.montant)}</strong></div>
+        <div><span>Détachement</span><strong>{e.date_detachement ? formatDate(e.date_detachement) : e.date_detachement_source || "Non communiqué"}</strong></div>
+        <div className="revenu-futur-montant"><span>Revenu estimé</span><strong>{formatFCFA(e.revenu_estime)}</strong></div>
+      </article>)}</div>}
+      <p className="explication">Montants bruts estimés à partir des quantités actuellement détenues. Ils peuvent évoluer si tes positions ou les annonces changent.</p>
+    </section>}
 
     <div className="calendrier-entete"><button onClick={() => changerMois(-1)}>←</button><h2>{MOIS[courant.getMonth()]} {courant.getFullYear()}</h2><button onClick={() => changerMois(1)}>→</button></div>
     <GrilleMois date={courant} evenements={evenementsMois} onRappel={rappeler} />
