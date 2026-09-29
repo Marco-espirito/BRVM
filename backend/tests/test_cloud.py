@@ -64,6 +64,17 @@ def test_export_ecrit_les_fichiers_attendus(tmp_path, monkeypatch):
     assert json.loads((tmp_path / "secteurs.json").read_text(encoding="utf-8")) == SECTEURS
 
 
+def test_export_actualise_les_secteurs_si_un_nouveau_symbole_arrive(tmp_path, monkeypatch):
+    _simuler_scrapers(monkeypatch)
+    (tmp_path / "secteurs.json").write_text(
+        json.dumps({"ABJC": "Industriels"}), encoding="utf-8"
+    )
+
+    cloud_ingest.exporter_tout(tmp_path, jour=date(2026, 7, 14))
+
+    assert json.loads((tmp_path / "secteurs.json").read_text(encoding="utf-8")) == SECTEURS
+
+
 def test_import_relit_les_fichiers_et_stocke(tmp_path, monkeypatch):
     _simuler_scrapers(monkeypatch)
     cloud_ingest.exporter_tout(tmp_path, jour=date(2026, 7, 10))

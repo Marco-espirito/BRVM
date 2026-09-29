@@ -61,8 +61,9 @@ def test_date_de_marche_publiee():
 
 def test_parse_indices_reference():
     html = """
-    <table><tr><td>BRVM-30</td><td>217,73</td><td>222,20</td><td>2,05</td></tr>
-    <tr><td>BRVM - COMPOSITE</td><td>463,89</td><td>470,48</td><td>1,42</td></tr></table>
+    <table><tr><td>BRVM-30</td><td>222,20</td><td>2,05%</td><td></td></tr></table>
+    <table><tr><td>BRVM-30</td><td>217,73</td><td>222,20</td><td>2,05</td><td>1,97</td></tr>
+    <tr><td>BRVM - COMPOSITE</td><td>463,89</td><td>470,48</td><td>1,42</td><td>1,70</td></tr></table>
     """
     indices = parse_indices(html)
     assert indices == [

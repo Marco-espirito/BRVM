@@ -51,11 +51,18 @@ def exporter_tout(data_dir: Path = DATA_DIR, jour: date | None = None) -> dict:
     )
 
     fichier_secteurs = data_dir / "secteurs.json"
-    if not fichier_secteurs.exists() or jour.weekday() == 0:
+    secteurs_existants = (
+        json.loads(fichier_secteurs.read_text(encoding="utf-8"))
+        if fichier_secteurs.exists()
+        else {}
+    )
+    symboles_actions = {action["symbole"] for action in actions}
+    nouveau_symbole = not symboles_actions.issubset(secteurs_existants)
+    if not fichier_secteurs.exists() or jour.weekday() == 0 or nouveau_symbole:
         secteurs = fetch_secteurs()
         _ecrire(fichier_secteurs, secteurs)
     else:
-        secteurs = json.loads(fichier_secteurs.read_text(encoding="utf-8"))
+        secteurs = secteurs_existants
 
     return {
         "jour": jour.isoformat(),

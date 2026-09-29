@@ -19,6 +19,12 @@
    "rendement": 6.81
   },
   {
+   "symbole": "SDSC",
+   "annee": 2025,
+   "montant": 81.0,
+   "rendement": 6.04
+  },
+  {
    "symbole": "BOAB",
    "annee": 2022,
    "montant": 273.0,
@@ -191,6 +197,30 @@
    "annee": 2025,
    "montant": 1157.0,
    "rendement": 8.27
+  },
+  {
+   "symbole": "BBGC",
+   "annee": 2022,
+   "montant": 157.0,
+   "rendement": null
+  },
+  {
+   "symbole": "BBGC",
+   "annee": 2023,
+   "montant": 169.0,
+   "rendement": null
+  },
+  {
+   "symbole": "BBGC",
+   "annee": 2024,
+   "montant": 220.0,
+   "rendement": null
+  },
+  {
+   "symbole": "BBGC",
+   "annee": 2025,
+   "montant": 312.0,
+   "rendement": null
   },
   {
    "symbole": "CFAC",
@@ -763,6 +793,12 @@
    "rendement": 8.9
   },
   {
+   "symbole": "TTLS",
+   "annee": 2025,
+   "montant": 177.0,
+   "rendement": 7.68
+  },
+  {
    "symbole": "PRSC",
    "annee": 2022,
    "montant": 224.0,
@@ -813,118 +849,28 @@
  ],
  "prochains": [
   {
-   "symbole": "BICB",
-   "date_detachement": "13/07/2026",
-   "montant": 254.6,
-   "rendement": 4.01
-  },
-  {
-   "symbole": "TTLS",
-   "date_detachement": "16/07/2026",
-   "montant": 176.65,
-   "rendement": 4.15
-  },
-  {
-   "symbole": "SIBC",
-   "date_detachement": "30/07/2026",
-   "montant": 425.0,
-   "rendement": 4.75
+   "symbole": "SHEC",
+   "date_detachement": "24/09/2026",
+   "montant": 96.67,
+   "rendement": 4.04
   },
   {
    "symbole": "ABJC",
    "date_detachement": "29/09/2026",
-   "montant": 124.0,
-   "rendement": 3.94
-  },
-  {
-   "symbole": "STBC",
-   "date_detachement": "A préciser",
-   "montant": 1707.2,
-   "rendement": 7.08
-  },
-  {
-   "symbole": "CFAC",
-   "date_detachement": "A préciser",
-   "montant": 55.44,
-   "rendement": 3.52
-  },
-  {
-   "symbole": "SLBC",
-   "date_detachement": "A préciser",
-   "montant": 1871.76,
-   "rendement": 4.69
-  },
-  {
-   "symbole": "NSBC",
-   "date_detachement": "A préciser",
-   "montant": 675.98,
-   "rendement": 3.12
-  },
-  {
-   "symbole": "SHEC",
-   "date_detachement": "A préciser",
-   "montant": 85.07,
-   "rendement": 3.86
-  },
-  {
-   "symbole": "CIEC",
-   "date_detachement": "A préciser",
-   "montant": 205.92,
-   "rendement": 3.86
-  },
-  {
-   "symbole": "SMBC",
-   "date_detachement": "A préciser",
-   "montant": 704.0,
-   "rendement": 4.07
+   "montant": 229.0,
+   "rendement": 6.27
   },
   {
    "symbole": "LNBB",
    "date_detachement": "A préciser",
    "montant": 164.0,
-   "rendement": 3.71
+   "rendement": 4.21
   },
   {
    "symbole": "PRSC",
    "date_detachement": "A préciser",
    "montant": 183.92,
-   "rendement": 4.3
-  },
-  {
-   "symbole": "NTLC",
-   "date_detachement": "A préciser",
-   "montant": 369.6,
-   "rendement": 2.27
-  },
-  {
-   "symbole": "SDCC",
-   "date_detachement": "A préciser",
-   "montant": 462.0,
-   "rendement": 3.81
-  },
-  {
-   "symbole": "NEIC",
-   "date_detachement": "A préciser",
-   "montant": 140.39,
-   "rendement": 7.02
-  },
-  {
-   "symbole": "SGBC",
-   "date_detachement": "A préciser",
-   "montant": 2293.28,
-   "rendement": 5.88
-  },
-  {
-   "symbole": "TTLC",
-   "date_detachement": "A préciser",
-   "montant": 139.77,
-   "rendement": 4.99
-  },
-  {
-   "symbole": "SPHC",
-   "date_detachement": "A préciser",
-   "montant": 430.32,
-   "rendement": 5.7
+   "rendement": 4.72
   }
  ]
 }

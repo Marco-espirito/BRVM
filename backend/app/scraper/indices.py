@@ -27,11 +27,15 @@ def parse_indices(html: str) -> list[dict]:
         if len(cellules) < 4 or cellules[0] not in NOMS:
             continue
         cloture = _to_float(cellules[2])
-        if cloture is not None:
+        variation = _to_float(cellules[3])
+        # La page contient aussi un resume en haut avec quatre cellules :
+        # [nom, cloture, variation, ""]. Ce n'est pas le tableau historique
+        # attendu et l'ajouter creerait un doublon BRVM-30.
+        if cloture is not None and variation is not None:
             resultat.append({
                 "code": NOMS[cellules[0]],
                 "cloture": cloture,
-                "variation": _to_float(cellules[3]),
+                "variation": variation,
             })
     if len(resultat) != 2:
         raise RuntimeError("Indices BRVM-30 et BRVM Composite introuvables")
