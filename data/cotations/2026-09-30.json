@@ -1,0 +1,449 @@
+{
+ "jour": "2026-09-30",
+ "actions": [
+  {
+   "symbole": "ABJC",
+   "nom": "SERVAIR ABIDJAN  COTE D'IVOIRE",
+   "volume": 1512.0,
+   "cours_veille": 3570.0,
+   "cours_ouverture": 3650.0,
+   "cours_cloture": 3640.0,
+   "variation": -0.27
+  },
+  {
+   "symbole": "BBGC",
+   "nom": "BRIDGE BANK GROUP COTE D'IVOIRE",
+   "volume": 156006.0,
+   "cours_veille": 9000.0,
+   "cours_ouverture": 9675.0,
+   "cours_cloture": 9000.0,
+   "variation": 0.0
+  },
+  {
+   "symbole": "BICB",
+   "nom": "BANQUE INTERNATIONALE POUR L’INDUSTRIE ET LE COMMERCE DU BENIN",
+   "volume": 2949.0,
+   "cours_veille": 8910.0,
+   "cours_ouverture": 8950.0,
+   "cours_cloture": 8910.0,
+   "variation": 4.09
+  },
+  {
+   "symbole": "BICC",
+   "nom": "BICI COTE D'IVOIRE",
+   "volume": 161.0,
+   "cours_veille": 32605.0,
+   "cours_ouverture": 34895.0,
+   "cours_cloture": 32605.0,
+   "variation": -6.56
+  },
+  {
+   "symbole": "BNBC",
+   "nom": "BERNABE COTE D'IVOIRE",
+   "volume": 2186.0,
+   "cours_veille": 1880.0,
+   "cours_ouverture": 1990.0,
+   "cours_cloture": 1875.0,
+   "variation": -5.78
+  },
+  {
+   "symbole": "BOAB",
+   "nom": "BANK OF AFRICA BENIN",
+   "volume": 1068.0,
+   "cours_veille": 9770.0,
+   "cours_ouverture": 9500.0,
+   "cours_cloture": 9750.0,
+   "variation": 3.72
+  },
+  {
+   "symbole": "BOABF",
+   "nom": "BANK OF AFRICA BURKINA FASO",
+   "volume": 1289.0,
+   "cours_veille": 8195.0,
+   "cours_ouverture": 8195.0,
+   "cours_cloture": 8200.0,
+   "variation": 0.12
+  },
+  {
+   "symbole": "BOAC",
+   "nom": "BANK OF AFRICA COTE D'IVOIRE",
+   "volume": 11842.0,
+   "cours_veille": 11600.0,
+   "cours_ouverture": 11640.0,
+   "cours_cloture": 11500.0,
+   "variation": -0.86
+  },
+  {
+   "symbole": "BOAM",
+   "nom": "BANK OF AFRICA MALI",
+   "volume": 3120.0,
+   "cours_veille": 6150.0,
+   "cours_ouverture": 6000.0,
+   "cours_cloture": 6145.0,
+   "variation": 2.5
+  },
+  {
+   "symbole": "BOAN",
+   "nom": "BANK OF AFRICA NIGER",
+   "volume": 4577.0,
+   "cours_veille": 5345.0,
+   "cours_ouverture": 5350.0,
+   "cours_cloture": 5300.0,
+   "variation": -0.93
+  },
+  {
+   "symbole": "BOAS",
+   "nom": "BANK OF AFRICA SENEGAL",
+   "volume": 9373.0,
+   "cours_veille": 8145.0,
+   "cours_ouverture": 8145.0,
+   "cours_cloture": 8145.0,
+   "variation": 0.0
+  },
+  {
+   "symbole": "CABC",
+   "nom": "SICABLE COTE D'IVOIRE",
+   "volume": 431.0,
+   "cours_veille": 3395.0,
+   "cours_ouverture": 3395.0,
+   "cours_cloture": 3395.0,
+   "variation": 0.0
+  },
+  {
+   "symbole": "CBIBF",
+   "nom": "CORIS BANK INTERNATIONAL BURKINA FASO",
+   "volume": 1322.0,
+   "cours_veille": 30060.0,
+   "cours_ouverture": 32500.0,
+   "cours_cloture": 30060.0,
+   "variation": -7.48
+  },
+  {
+   "symbole": "CFAC",
+   "nom": "CFAO MOTORS COTE D'IVOIRE",
+   "volume": 2422.0,
+   "cours_veille": 1555.0,
+   "cours_ouverture": 1555.0,
+   "cours_cloture": 1545.0,
+   "variation": -3.44
+  },
+  {
+   "symbole": "CIEC",
+   "nom": "CIE COTE D'IVOIRE",
+   "volume": 7469.0,
+   "cours_veille": 6450.0,
+   "cours_ouverture": 6450.0,
+   "cours_cloture": 6450.0,
+   "variation": 0.0
+  },
+  {
+   "symbole": "ECOC",
+   "nom": "ECOBANK COTE D'IVOIRE",
+   "volume": 1651.0,
+   "cours_veille": 16850.0,
+   "cours_ouverture": 16800.0,
+   "cours_cloture": 16835.0,
+   "variation": 0.24
+  },
+  {
+   "symbole": "ETIT",
+   "nom": "Ecobank Transnational Incorporated TOGO",
+   "volume": 1349362.0,
+   "cours_veille": 66.0,
+   "cours_ouverture": 67.0,
+   "cours_cloture": 67.0,
+   "variation": -2.9
+  },
+  {
+   "symbole": "FTSC",
+   "nom": "FILTISAC COTE D'IVOIRE",
+   "volume": 2381.0,
+   "cours_veille": 1995.0,
+   "cours_ouverture": 1995.0,
+   "cours_cloture": 1975.0,
+   "variation": -1.0
+  },
+  {
+   "symbole": "LNBB",
+   "nom": "LOTERIE NATIONALE DU BENIN",
+   "volume": 1608.0,
+   "cours_veille": 3900.0,
+   "cours_ouverture": 3900.0,
+   "cours_cloture": 3865.0,
+   "variation": -0.9
+  },
+  {
+   "symbole": "NEIC",
+   "nom": "NEI-CEDA COTE D'IVOIRE",
+   "volume": 2322.0,
+   "cours_veille": 2300.0,
+   "cours_ouverture": 2130.0,
+   "cours_cloture": 2300.0,
+   "variation": 0.0
+  },
+  {
+   "symbole": "NSBC",
+   "nom": "NSIA BANQUE COTE D'IVOIRE",
+   "volume": 2653.0,
+   "cours_veille": 21500.0,
+   "cours_ouverture": 21800.0,
+   "cours_cloture": 21500.0,
+   "variation": 0.0
+  },
+  {
+   "symbole": "NTLC",
+   "nom": "NESTLE COTE D'IVOIRE",
+   "volume": 922.0,
+   "cours_veille": 15000.0,
+   "cours_ouverture": 15900.0,
+   "cours_cloture": 15000.0,
+   "variation": -2.6
+  },
+  {
+   "symbole": "ONTBF",
+   "nom": "ONATEL BURKINA FASO",
+   "volume": 3782.0,
+   "cours_veille": 2950.0,
+   "cours_ouverture": 2960.0,
+   "cours_cloture": 2945.0,
+   "variation": -0.17
+  },
+  {
+   "symbole": "ORAC",
+   "nom": "ORANGE COTE D'IVOIRE",
+   "volume": 2465.0,
+   "cours_veille": 21805.0,
+   "cours_ouverture": 21805.0,
+   "cours_cloture": 21500.0,
+   "variation": -1.4
+  },
+  {
+   "symbole": "ORGT",
+   "nom": "ORAGROUP TOGO",
+   "volume": 1261.0,
+   "cours_veille": 2900.0,
+   "cours_ouverture": 3000.0,
+   "cours_cloture": 2900.0,
+   "variation": -3.33
+  },
+  {
+   "symbole": "PALC",
+   "nom": "PALM COTE D'IVOIRE",
+   "volume": 766.0,
+   "cours_veille": 8250.0,
+   "cours_ouverture": 8300.0,
+   "cours_cloture": 8290.0,
+   "variation": 0.48
+  },
+  {
+   "symbole": "PRSC",
+   "nom": "TRACTAFRIC MOTORS COTE D'IVOIRE",
+   "volume": 723.0,
+   "cours_veille": 4100.0,
+   "cours_ouverture": 3900.0,
+   "cours_cloture": 4100.0,
+   "variation": 5.13
+  },
+  {
+   "symbole": "SAFC",
+   "nom": "SAFCA COTE D'IVOIRE",
+   "volume": 4497.0,
+   "cours_veille": 4600.0,
+   "cours_ouverture": 4800.0,
+   "cours_cloture": 4595.0,
+   "variation": -4.27
+  },
+  {
+   "symbole": "SCRC",
+   "nom": "SUCRIVOIRE COTE D'IVOIRE",
+   "volume": 13275.0,
+   "cours_veille": 2850.0,
+   "cours_ouverture": 2950.0,
+   "cours_cloture": 2835.0,
+   "variation": -3.9
+  },
+  {
+   "symbole": "SDCC",
+   "nom": "SODE COTE D'IVOIRE",
+   "volume": 1330.0,
+   "cours_veille": 12990.0,
+   "cours_ouverture": 12990.0,
+   "cours_cloture": 13000.0,
+   "variation": 0.08
+  },
+  {
+   "symbole": "SDSC",
+   "nom": "AFRICA GLOBAL LOGISTICS COTE D'IVOIRE",
+   "volume": 2170.0,
+   "cours_veille": 3015.0,
+   "cours_ouverture": 3015.0,
+   "cours_cloture": 3015.0,
+   "variation": 0.0
+  },
+  {
+   "symbole": "SEMC",
+   "nom": "EVIOSYS PACKAGING SIEM COTE D'IVOIRE",
+   "volume": 0.0,
+   "cours_veille": 1495.0,
+   "cours_ouverture": 0.0,
+   "cours_cloture": 1495.0,
+   "variation": 0.0
+  },
+  {
+   "symbole": "SGBC",
+   "nom": "SOCIETE GENERALE COTE D'IVOIRE",
+   "volume": 2986.0,
+   "cours_veille": 38900.0,
+   "cours_ouverture": 38900.0,
+   "cours_cloture": 38990.0,
+   "variation": 0.23
+  },
+  {
+   "symbole": "SHEC",
+   "nom": "VIVO ENERGY COTE D'IVOIRE",
+   "volume": 5689.0,
+   "cours_veille": 2370.0,
+   "cours_ouverture": 2380.0,
+   "cours_cloture": 2360.0,
+   "variation": -1.26
+  },
+  {
+   "symbole": "SIBC",
+   "nom": "SOCIETE IVOIRIENNE DE BANQUE COTE D'IVOIRE",
+   "volume": 6061.0,
+   "cours_veille": 9150.0,
+   "cours_ouverture": 9150.0,
+   "cours_cloture": 9160.0,
+   "variation": 0.11
+  },
+  {
+   "symbole": "SICC",
+   "nom": "SICOR COTE D'IVOIRE",
+   "volume": 0.0,
+   "cours_veille": 8400.0,
+   "cours_ouverture": 0.0,
+   "cours_cloture": 8400.0,
+   "variation": 0.0
+  },
+  {
+   "symbole": "SIVC",
+   "nom": "ERIUM COTE D’IVOIRE",
+   "volume": 4940.0,
+   "cours_veille": 2000.0,
+   "cours_ouverture": 2010.0,
+   "cours_cloture": 2000.0,
+   "variation": -6.54
+  },
+  {
+   "symbole": "SLBC",
+   "nom": "SOLIBRA COTE D'IVOIRE",
+   "volume": 1156.0,
+   "cours_veille": 37800.0,
+   "cours_ouverture": 38000.0,
+   "cours_cloture": 37500.0,
+   "variation": -0.79
+  },
+  {
+   "symbole": "SMBC",
+   "nom": "SMB COTE D'IVOIRE",
+   "volume": 888.0,
+   "cours_veille": 16500.0,
+   "cours_ouverture": 16500.0,
+   "cours_cloture": 16500.0,
+   "variation": 0.0
+  },
+  {
+   "symbole": "SNTS",
+   "nom": "SONATEL SENEGAL",
+   "volume": 22678.0,
+   "cours_veille": 44985.0,
+   "cours_ouverture": 43005.0,
+   "cours_cloture": 45000.0,
+   "variation": 4.66
+  },
+  {
+   "symbole": "SOGC",
+   "nom": "SOGB COTE D'IVOIRE",
+   "volume": 4508.0,
+   "cours_veille": 8050.0,
+   "cours_ouverture": 7945.0,
+   "cours_cloture": 8100.0,
+   "variation": 1.95
+  },
+  {
+   "symbole": "SPHC",
+   "nom": "SAPH COTE D'IVOIRE",
+   "volume": 2275.0,
+   "cours_veille": 7905.0,
+   "cours_ouverture": 7995.0,
+   "cours_cloture": 7995.0,
+   "variation": 1.2
+  },
+  {
+   "symbole": "STAC",
+   "nom": "SETAO COTE D'IVOIRE",
+   "volume": 6589.0,
+   "cours_veille": 2300.0,
+   "cours_ouverture": 2400.0,
+   "cours_cloture": 2300.0,
+   "variation": -3.36
+  },
+  {
+   "symbole": "STBC",
+   "nom": "SITAB COTE D'IVOIRE",
+   "volume": 1044.0,
+   "cours_veille": 21975.0,
+   "cours_ouverture": 21400.0,
+   "cours_cloture": 21970.0,
+   "variation": -0.02
+  },
+  {
+   "symbole": "TTLC",
+   "nom": "TOTALENERGIES MARKETING COTE D'IVOIRE",
+   "volume": 1822.0,
+   "cours_veille": 3200.0,
+   "cours_ouverture": 3175.0,
+   "cours_cloture": 3200.0,
+   "variation": 0.79
+  },
+  {
+   "symbole": "TTLS",
+   "nom": "TOTALENERGIES MARKETING SENEGAL",
+   "volume": 1732.0,
+   "cours_veille": 3615.0,
+   "cours_ouverture": 3615.0,
+   "cours_cloture": 3640.0,
+   "variation": 0.69
+  },
+  {
+   "symbole": "UNLC",
+   "nom": "UNILEVER COTE D'IVOIRE",
+   "volume": 4.0,
+   "cours_veille": 47215.0,
+   "cours_ouverture": 47500.0,
+   "cours_cloture": 47500.0,
+   "variation": 0.6
+  },
+  {
+   "symbole": "UNXC",
+   "nom": "UNIWAX COTE D'IVOIRE",
+   "volume": 3896.0,
+   "cours_veille": 2445.0,
+   "cours_ouverture": 2435.0,
+   "cours_cloture": 2425.0,
+   "variation": -0.82
+  }
+ ],
+ "indices": [
+  {
+   "code": "BRVM-30",
+   "cloture": 266.08,
+   "variation": 0.35
+  },
+  {
+   "code": "BRVM-COMPOSITE",
+   "cloture": 548.38,
+   "variation": 0.06
+  }
+ ]
+}
