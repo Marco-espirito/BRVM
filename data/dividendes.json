@@ -849,28 +849,22 @@
  ],
  "prochains": [
   {
-   "symbole": "SHEC",
-   "date_detachement": "24/09/2026",
-   "montant": 96.67,
-   "rendement": 4.1
-  },
-  {
    "symbole": "ABJC",
    "date_detachement": "29/09/2026",
    "montant": 229.0,
-   "rendement": 6.29
+   "rendement": 6.8
   },
   {
    "symbole": "LNBB",
    "date_detachement": "A préciser",
    "montant": 164.0,
-   "rendement": 4.24
+   "rendement": 4.22
   },
   {
    "symbole": "PRSC",
    "date_detachement": "A préciser",
    "montant": 183.92,
-   "rendement": 4.49
+   "rendement": 4.71
   }
  ]
 }
