@@ -852,19 +852,19 @@
    "symbole": "ABJC",
    "date_detachement": "29/09/2026",
    "montant": 229.0,
-   "rendement": 6.8
+   "rendement": 6.54
   },
   {
    "symbole": "LNBB",
    "date_detachement": "A préciser",
    "montant": 164.0,
-   "rendement": 4.22
+   "rendement": 4.29
   },
   {
    "symbole": "PRSC",
    "date_detachement": "A préciser",
    "montant": 183.92,
-   "rendement": 4.71
+   "rendement": 4.72
   }
  ]
 }
