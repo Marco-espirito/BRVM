@@ -852,19 +852,19 @@
    "symbole": "PRSC",
    "date_detachement": "22/10/2026",
    "montant": 209.0,
-   "rendement": 4.75
+   "rendement": 4.81
   },
   {
    "symbole": "SDSC",
    "date_detachement": "26/10/2026",
    "montant": 92.0,
-   "rendement": 3.05
+   "rendement": 2.97
   },
   {
    "symbole": "LNBB",
    "date_detachement": "A préciser",
    "montant": 164.0,
-   "rendement": 4.21
+   "rendement": 4.05
   }
  ]
 }
