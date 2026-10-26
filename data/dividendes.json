@@ -729,26 +729,26 @@
   {
    "symbole": "SNTS",
    "annee": 2022,
-   "montant": 1500.0,
-   "rendement": 10.73
+   "montant": 150.0,
+   "rendement": 9.87
   },
   {
    "symbole": "SNTS",
    "annee": 2023,
-   "montant": 1575.0,
-   "rendement": 10.36
+   "montant": 158.0,
+   "rendement": 8.76
   },
   {
    "symbole": "SNTS",
    "annee": 2024,
-   "montant": 1655.0,
-   "rendement": 9.2
+   "montant": 166.0,
+   "rendement": 6.9
   },
   {
    "symbole": "SNTS",
    "annee": 2025,
-   "montant": 1740.0,
-   "rendement": 7.25
+   "montant": 174.0,
+   "rendement": 6.66
   },
   {
    "symbole": "TTLC",
@@ -864,7 +864,7 @@
    "symbole": "LNBB",
    "date_detachement": "A préciser",
    "montant": 164.0,
-   "rendement": 4.1
+   "rendement": 4.11
   }
  ]
 }
